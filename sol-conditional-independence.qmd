@@ -1,0 +1,138 @@
+---
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+# Conditional Probability, Independence, and Conditional Independence {.unnumbered}
+
+Consider three tennis players A, B, and C.
+One of these players is better than the other two, who are equally good/bad.
+When the best player plays either of the others, she has a 2/3 probability of winning the match.
+When the other two players play each other, each has a 1/2 probability of winning the match.
+But you do not know which player is the best.
+Based on watching the players warm up, you start with subjective probabilities of 0.5 that A is the best, 0.35 that B is the best, and 0.15 that C is the best.
+A and B will play the first match.
+
+Note: the fact the your probabilities are "subjective" doesn't impact how you solve the problem.
+
+1.  Before any matches, if you had to choose the one player you think is best, who would you choose? What is your subjective probability that your choice is correct? (This should be a short answer, not requiring any calculations. I'm mostly asking this question so you can compare the value to one in a later question.)
+
+You would chose A as the best player with a subjective probability of 0.5.
+
+2.  Is it reasonable to assume that the results of the matches are independent? Explain intuitively, without doing any calculations.
+
+No, knowing the result of one match changes the expectation of other matches.
+
+3.  Is it reasonable to assume that the results of the matches are conditionally independent given the identity of the best player? Explain intuitively, without doing any calculations.
+
+Yes, if you know who the best player is, the results of one match does not change the expectations of another match.
+
+4.  A will play B in the first match. Compute your subjective probability that A will beat B in the first match.
+
+$$
+Pr(\text{A beats B}) = Pr(\text{A is best})Pr(\text{A beats B | A is best}) + Pr(\text{B is best})Pr(\text{A beats B | B is best}) + Pr(\text{C is best})Pr(\text{A beats B | C is best})
+$$
+
+$$
+Pr(\text{A beats B}) = 0.5*\frac{2}{3} + 0.35*\frac{1}{3} + 0.15*\frac{1}{2} = 0.525
+$$
+
+5.  Suppose that A beats B in the first match. Compute your posterior probability that each of A, B, C is best given that A beats B in the first match. (You should get 0.6349, 0.2222, and 0.1429.)
+
+$$
+Pr(\text{A is best | A beats B}) = \frac{Pr(\text{A beats B | A is best})Pr(\text{A is best})}{Pr(\text{A beats B})} = \frac{\frac{2}{3}*0.5}{0.525} = 0.6349
+$$
+
+$$
+Pr(\text{B is best | A beats B}) = \frac{Pr(\text{A beats B | B is best})Pr(\text{B is best})}{Pr(\text{A beats B})} = \frac{\frac{1}{3}*0.35}{0.525} = 0.2222
+$$
+
+$$
+Pr(\text{C is best | A beats B}) = \frac{Pr(\text{A beats B | C is best})Pr(\text{C is best})}{Pr(\text{A beats B})} = \frac{\frac{1}{2}*0.15}{0.525} = 0.1429
+$$
+
+6.  Compare the posterior probabilities from the previous part to the prior probabilities. Explain how your probabilities changed, and why that makes sense.
+
+The probability of A increased while the probability of B and C decreased.
+This makes sense because A winning the first match would make A more likely to be the best player.
+
+7.  Suppose instead that B beats A in the first match. Compute your subjective probability that each of A, B, C is best given that B beats A in the first match. (You should get 0.3509, 0.4912, and 0.1579.)
+
+$$
+Pr(\text{B beats A}) = Pr(\text{A is best})Pr(\text{B beats A | A is best}) + Pr(\text{B is best})Pr(\text{B beats A | B is best}) + Pr(\text{C is best})Pr(\text{B beats A | C is best})
+$$
+
+$$
+Pr(\text{B beats A}) = 0.5*\frac{1}{3} + 0.35*\frac{2}{3} + 0.15*\frac{1}{2} = 0.475
+$$
+
+$$
+Pr(\text{A is best | B beats A}) = \frac{Pr(\text{B beats A | A is best})Pr(\text{A is best})}{Pr(\text{B beats A})} = \frac{\frac{1}{3}*0.5}{0.475} = 0.3509
+$$
+
+$$
+Pr(\text{B is best | B beats A}) = \frac{Pr(\text{B beats A | B is best})Pr(\text{B is best})}{Pr(\text{B beats A})} = \frac{\frac{2}{3}*0.35}{0.475} = 0.4912
+$$
+
+$$
+Pr(\text{C is best | B beats A}) = \frac{Pr(\text{B beats A | C is best})Pr(\text{C is best})}{Pr(\text{B beats A})} = \frac{\frac{1}{2}*0.15}{0.475} = 0.1579
+$$
+
+8.  Compare the posterior probabilities from the previous part to the prior probabilities. Explain how your probabilities changed, and why that makes sense.
+
+The probability of B and C increased while the probability of A decreased.
+Player B winning increases their chances of being the best player.
+Player A losing decreases their chances of being the best player.
+Because player A was thought to be the best previously and lost, it might slightly increase C chances of being the best also.
+
+9.  Suppose that A beats B in the first match. If you had to choose the one player you think is best based on your updated subjective probabilities, who would you choose? What is your subjective probability that your choice is correct given that A beats B in the first match?
+
+You would chose A as the best player with a subjective probability of 0.6349.
+
+10. Suppose that B beats A in the first match. If you had to choose the one player you think is best based on your updated subjective probabilities, who would you choose? What is your subjective probability that your choice is correct given that B beats A in the first match?
+
+You would chose B as the best player with a subjective probability of 0.4912.
+
+11. After the first match you make your choice of who you think is the best player. What is your subjective probability that your choice is correct? (Hint: this should be a single number, but you need to consider the two cases.) Compare to part 1; what is the “value” of observing the winner of the first match?
+
+$$
+Pr(\text{correct}) = Pr(\text{A is best | A beats B})Pr(\text{A beats B}) + Pr(\text{B is best | A beats B})Pr(\text{B beats A})
+$$
+
+$$
+Pr(\text{correct}) = 0.6349*0.525 + 0.4912*0.475 = 0.567
+$$
+
+The "value" of observing the winner of the first match is 6.7 percentage points.
+
+12. Now suppose again that A beats B in the first match, and also that A beats C in the second match. Compute your posterior probability that each of A, B, C is best given the results of the first two matches. Explain how your probabilities changed, and why that makes sense.
+
+Let E be the event that A wins both matches.
+
+$$
+\begin{aligned}
+Pr(\text{A is best | E}) &= \frac{Pr(\text{E | A is best})Pr(\text{A is best})}{Pr(\text{E})} \\
+&= \frac{Pr(\text{E | A is best})Pr(\text{A is best})}{Pr(\text{E | A is best})Pr(\text{A is best}) + Pr(\text{E | B is best})Pr(\text{B is best}) + Pr(\text{E | C is best})Pr(\text{C is best})} \\
+&= \frac{\frac{2}{3}*\frac{2}{3}*0.5}{\frac{2}{3}*\frac{2}{3}*0.5 + \frac{1}{3}*\frac{1}{2}*0.35 + \frac{1}{2}*\frac{1}{3}*0.15} \\
+&= 0.727
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+Pr(\text{B is best | E}) &= \frac{Pr(\text{E | B is best})Pr(\text{B is best})}{Pr(\text{E})} \\
+&= \frac{Pr(\text{E | B is best})Pr(\text{B is best})}{Pr(\text{E | A is best})Pr(\text{A is best}) + Pr(\text{E | B is best})Pr(\text{B is best}) + Pr(\text{E | C is best})Pr(\text{C is best})} \\
+&= \frac{\frac{1}{3}*\frac{1}{2}*0.35}{\frac{2}{3}*\frac{2}{3}*0.5 + \frac{1}{3}*\frac{1}{2}*0.35 + \frac{1}{2}*\frac{1}{3}*0.15} \\
+&= 0.191
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+Pr(\text{C is best | E}) &= \frac{Pr(\text{E | C is best})Pr(\text{C is best})}{Pr(\text{E})} \\
+&= \frac{Pr(\text{E | C is best})Pr(\text{C is best})}{Pr(\text{E | A is best})Pr(\text{A is best}) + Pr(\text{E | B is best})Pr(\text{B is best}) + Pr(\text{E | C is best})Pr(\text{C is best})} \\
+&= \frac{\frac{1}{2}*\frac{1}{3}*0.15}{\frac{2}{3}*\frac{2}{3}*0.5 + \frac{1}{3}*\frac{1}{2}*0.35 + \frac{1}{2}*\frac{1}{3}*0.15} \\
+&= 0.082
+\end{aligned}
+$$

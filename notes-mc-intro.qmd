@@ -1,0 +1,204 @@
+# Introduction to Markov Chains {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+
+## Markov's letters
+
+
+```{r}
+
+state_names = c("vowel", "consonant")
+
+P = rbind(
+  c(0.1, 0.9),
+  c(0.7, 0.3)
+)
+
+```
+
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+### Transition spinners
+
+```{r}
+plot_transition_spinners(P)
+
+```
+
+
+
+
+### State diagram
+
+
+```{r}
+plot_state_diagram(P, state_names)
+
+```
+
+
+## Ping pong
+
+```{r}
+state_names = c("AB", "AC", "BC")
+
+P = rbind(c(0, .7, .3),
+          c(.8, 0, .2),
+          c(.6, .4, 0)
+)
+```
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+### Transition spinners
+
+```{r}
+plot_transition_spinners(P)
+
+```
+
+
+### State diagram
+
+
+```{r}
+plot_state_diagram(P, state_names)
+
+```
+
+
+
+
+## Weather chain
+
+
+```{r}
+state_names = c("RR", "NR", "RN", "NN")
+
+P = rbind(c(.7, 0, .3, 0),
+          c(.5, 0, .5, 0),
+          c(0, .4, 0, .6),
+          c(0, .2, 0, .8)
+)
+```
+
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+### Transition spinners
+
+```{r}
+plot_transition_spinners(P)
+
+```
+
+
+### State diagram
+
+
+```{r}
+plot_state_diagram(P, state_names)
+
+```
+
+
+## Collector problem
+
+
+```{r}
+C = 6
+
+state_names = 0:C
+
+P = matrix(rep(0, (C + 1) ^ 2), nrow = (C + 1))
+P[C + 1, C + 1] = 1
+
+for (s in 0:(C - 1)) {
+  P[s + 1, (s + 1):(s + 2)] = c(s / C, 1 - s / C)
+}
+```
+
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+### Transition spinners
+
+```{r}
+plot_transition_spinners(P)
+
+```
+
+
+### State diagram
+
+
+```{r}
+plot_state_diagram(P, state_names)
+
+```
+
+
+## Ehrenfest urn chain
+
+
+```{r}
+M = 3
+
+state_names = 0:M
+
+P= rbind(c(0, 1, 0, 0),
+         c(1/3, 0, 2/3, 0),
+         c(0, 2/3, 0, 1/3),
+         c(0, 0, 1, 0)
+)
+
+```
+
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+
+### Transition spinners
+
+```{r}
+plot_transition_spinners(P)
+
+```
+
+
+### State diagram
+
+
+```{r}
+plot_state_diagram(P, state_names)
+
+```
+
+

@@ -1,0 +1,18 @@
+# Brownian Motion {.unnumbered}
+
+
+(@) Let $\{W(t), t\ge0\}$ be a standard Brownian motion, and let $X(t) = 0.5W(4t)$.
+
+
+a. Find the autocovariance function of the process $\{X(t), t\ge 0\}$.
+a. Is the process $\{X(t), t\ge 0\}$ a standard Brownian motion?
+Justify your answer.
+  
+
+(@) Suppose the net *losses* of a gambler who plays a large number of games of roulette can be reasonably modeled as a Brownian motion with drift $\mu=0.01$ per minute and scale parameter $\sigma = 0.2$ per minute.
+Let $B(t)$ denote the net loss of the gambler after $t$ minutes of roulette play.
+For the parts below in addition to computing, denote the corresponding probability in terms of proper symbols and notation.
+
+a. Compute the conditional probability that the gambler's net loss after 10000 minutes is greater than 105, given that the net loss after 1000 minutes is equal to 5. 
+a. Compute the probability that the gambler's net loss after 10000 minutes is more than 4 times the net loss after 5000 minutes.
+

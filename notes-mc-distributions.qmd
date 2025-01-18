@@ -1,0 +1,277 @@
+# Markov Chains: Joint, Conditional, and Marginal Distributions {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+
+## Popcorn and ice cream
+
+
+```{r}
+
+state_names = c("ice cream", "popcorn")
+
+P = rbind(
+  c(0.2, 0.8),
+  c(0.4, 0.6)
+)
+
+```
+
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+### 2-step transition matrix
+
+
+```{r}
+P %*% P
+```
+
+
+```{r}
+library(expm)
+P %^% 2
+```
+
+
+
+```{r}
+plot_transition_matrix(P, n_step = 2)
+
+```
+
+
+### 3-step transition matrix
+
+```{r}
+P %^% 3
+```
+
+
+```{r}
+plot_transition_matrix(P, n_step = 3)
+```
+
+## Weather chain
+
+
+```{r}
+state_names = c("RR", "NR", "RN", "NN")
+
+P = rbind(c(.7, 0, .3, 0),
+          c(.5, 0, .5, 0),
+          c(0, .4, 0, .6),
+          c(0, .2, 0, .8)
+)
+```
+
+
+### Transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names)
+
+```
+
+### 2-step transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names, n_step = 2)
+
+```
+
+### 2-step transition matrix
+
+```{r}
+plot_transition_matrix(P, state_names, n_step = 3)
+
+```
+
+
+## Ping pong
+
+```{r}
+state_names = c("AB", "AC", "BC")
+
+P = rbind(c(0, .7, .3),
+          c(.8, 0, .2),
+          c(.6, .4, 0)
+)
+```
+
+### Initial players chosen at random
+
+```{r}
+pi_0 = c(1/3, 1/3, 1/3)
+
+pi_0 %*% P
+```
+
+
+```{r}
+plot_DTMC_marginal_bars(pi_0, P, state_names, last_time = 10)
+```
+
+
+### Player A's initial opponent chosen at random
+
+```{r}
+pi_0 = c(1/2, 1/2, 0)
+
+pi_0 %*% P
+```
+
+
+```{r}
+plot_DTMC_marginal_bars(pi_0, P, state_names, last_time = 10)
+```
+
+### Player A and B play initially
+
+```{r}
+pi_0 = c(1, 0, 0)
+
+pi_0 %*% P
+```
+
+
+```{r}
+plot_DTMC_marginal_bars(pi_0, P, state_names, last_time = 10)
+```
+
+
+
+
+## Ehrenfest urn chain
+
+
+```{r}
+M = 3
+
+state_names = 0:M
+
+P = rbind(c(0, 1, 0, 0),
+         c(1/3, 0, 2/3, 0),
+         c(0, 2/3, 0, 1/3),
+         c(0, 0, 1, 0)
+)
+
+```
+
+
+### Molecules initially distributed at random between A and B
+
+
+Marginal distribution of $X_0$
+
+```{r}
+pi_0 = dbinom(0:M, M, 0.5)
+
+pi_0
+```
+
+
+Marginal distribution of $X_1$
+
+```{r}
+pi_0 %*% P
+```
+
+
+Marginal distribution of $X_2$
+
+```{r}
+pi_0 %*% (P %^% 2)
+```
+
+Marginal distribution of $X_3$
+
+```{r}
+pi_0 %*% (P %^% 3)
+```
+
+
+
+```{r}
+plot_DTMC_marginal_bars(pi_0, P, state_names, last_time = 10)
+```
+
+### Molecules initially all in A
+
+Marginal distribution of $X_0$
+
+```{r}
+pi_0 = c(rep(0, M), 1)
+
+pi_0
+```
+
+
+Marginal distribution of $X_1$
+
+```{r}
+pi_0 %*% P
+```
+
+
+Marginal distribution of $X_2$
+
+```{r}
+pi_0 %*% (P %^% 2)
+```
+
+Marginal distribution of $X_3$
+
+```{r}
+pi_0 %*% (P %^% 3)
+```
+
+
+
+```{r}
+plot_DTMC_marginal_bars(pi_0, P, state_names, last_time = 10)
+```
+
+
+
+### Molecules initially all in B
+
+Marginal distribution of $X_0$
+
+```{r}
+pi_0 = c(1, rep(0, M))
+
+pi_0
+```
+
+
+Marginal distribution of $X_1$
+
+```{r}
+pi_0 %*% P
+```
+
+
+Marginal distribution of $X_2$
+
+```{r}
+pi_0 %*% (P %^% 2)
+```
+
+Marginal distribution of $X_3$
+
+```{r}
+pi_0 %*% (P %^% 3)
+```
+
+
+
+```{r}
+plot_DTMC_marginal_bars(pi_0, P, state_names, last_time = 10)
+```
+

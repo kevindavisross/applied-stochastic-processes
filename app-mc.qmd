@@ -1,0 +1,51 @@
+# Markov Chains {.unnumbered}
+
+
+
+Every day for lunch you have either a sandwich (state 1), a burrito (state 2), or pizza (state 3).
+Suppose your lunch choices from one day to the next follow a Markov chain with transition matrix
+
+$$
+\mathbf{P} = 
+\begin{bmatrix}
+0 & 0.5 & 0.5\\
+0.1 & 0.4 & 0.5\\
+0.2 & 0.3 & 0.5
+\end{bmatrix}
+$$
+
+Suppose today is Monday and consider your upcoming lunches.
+
+
+- Monday is day 0, Tuesday is day 1, etc.
+- You start with pizza on day 0 (Monday).
+- Let $T$ be the first time (day) you have a sandwich.
+(Note: it is possible for $T$ to be greater than 4.)
+- Let $V$ be the number of times (days) you have a burrito this five-day work week.
+- Pizza costs \$5, burrito \$7, and sandwich \$9.
+- Let $X_n$ be the *cost* of your lunch on day $n$.
+- Let $W = X_0 + \cdots + X_4$ be your total lunch cost for this five-day work week.
+
+
+**Write code to setup and run a simulation to investigate the following.**
+
+1. Approximate the marginal distribution, along with the expected value and standard deviation, of each of the following
+    1. $X_4$
+    1. $T$
+    1. $V$
+    1. $W$
+1. Approximate the joint distribution, along with the correlation, of each of the following
+    1. $X_4$ and $X_5$.
+    1. $T$ and $V$
+    1. $T$ and $W$
+    1. $W$ and $V$
+1. Approximate the conditional distribution of $V$ given $T=4$, along with its (conditional) mean and standard deviation.
+1. Your choice.
+Choose at least one other joint, conditional, or marginal distribution to investigate.
+You can work with $X_n, T, V, W$, but you are also welcome to define other random variables in this context.
+You can also look at time frames other than a single week.
+
+
+
+For each of the approximate distributions, display the results in an appropriate plot, and write a sentence or two describing in words in context some of the main features.
+

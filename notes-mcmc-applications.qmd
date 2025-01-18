@@ -1,0 +1,502 @@
+# Some Applications of MCMC {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+## Bayesian statistics
+
+
+```{r}
+n_steps = 10000
+delta = 0.05
+
+x = rep(NA, n_steps)
+x[1] = 0.75 # initialize
+
+# Posterior is proportional to prior * likelihood
+pi_x <- function(x) {
+  if (x > 0 & x < 1) dnorm(x, 0.75, 0.05) * dbinom(60, 100, x) else 0
+}
+
+for (n in 2:n_steps){
+  current = x[n - 1]
+  
+  # propose next state from "jumping" distribution
+  proposed = current + rnorm(1, mean = 0, sd = delta)
+  
+  # compute acceptance probability
+  accept = min(1, pi_x(proposed) / pi_x(current))
+  
+  # simulate next state
+  x[n] = sample(c(current, proposed), 1, prob = c(1 - accept, accept)) 
+}
+
+# display the first few steps
+data.frame(step = 1:n_steps, x) |> head(10) |> kbl() |> kable_styling() 
+```
+
+```{r}
+# trace plot of first 100 steps
+plot(1:100, x[1:100], type = "o", xlab = "step",
+     ylab = "x", main = "First 100 steps")
+```
+
+
+```{r}
+# trace plot
+plot(1:n_steps, x, type = "l", ylim = range(x), xlab = "Step", ylab = "x")
+```
+
+
+
+
+```{r}
+# simulated values of x
+hist(x, breaks = 50, freq = FALSE,
+ xlab = "theta", ylab = "pi(x|y = 60)", main = "Conditional Distribution")
+
+# plot of theoretical conditional density of x
+# Normal(0.75, 0.05) is approximately Beta(55.5, 18.5)
+# So conditional given Y = 60 is approximately Beta(55.5 + 60, 18.5 + 40)
+x_plot = seq(0, 1, 0.0001)
+lines(x_plot, dbeta(x_plot, 55.5 + 60, 18.5 + 40), col = "seagreen", lwd = 2)
+```
+
+
+### Multivariable
+
+Attempts 4 free throws and makes 3 in the first game, and attempts 6
+free throws and makes 4 in the second game.
+
+```{r}
+# posterior is proportion to product of prior and likelihood
+pi_xz <- function(x, z) {
+  if (z > 0 & x > 0 & x < 1) {
+    dexp(z, rate = 1 / 2.5) * dnorm(x, 0.75, 0.05) *
+      dpois(4, z) * dbinom(3, 4, x) *
+      dpois(6, z) * dbinom(4, 6, x)
+  } else {
+    0
+  }
+}
+
+pi_xz(0.7, 5) / pi_xz(0.75, 2.5)
+```
+
+
+```{r}
+n_steps = 11000
+delta = c(0.05, 0.5) # x, z
+
+xz = data.frame(x = rep(NA, n_steps),
+               z = rep(NA, n_steps))
+xz[1, ] = c(0.75, 2.5) # initialize
+
+for (n in 2:n_steps){
+  current = xz[n - 1, ]
+  
+  # proposed next state
+  proposed = current + rnorm(2, mean = 0, sd = delta)
+  
+  # compute acceptance probability
+  accept = min(1, pi_xz(proposed$x, proposed$z) / pi_xz(current$x, current$z))
+  
+  # simulate next state
+  accept_ind = sample(0:1, 1, prob = c(1 - accept, accept))
+  xz[n, ] = proposed * accept_ind + current * (1 - accept_ind)
+}
+
+# display the first few steps
+data.frame(step = 1:n_steps, xz) |> head(10) |> kbl() |> kable_styling() 
+```
+
+
+
+```{r}
+# Trace plot of first 100 steps
+ggplot(xz[1:100, ] %>%
+         mutate(label = 1:100),
+       aes(x, z)) +
+  geom_path() +
+  geom_point(size = 2) +
+  geom_text(aes(label = label, x = x + 0.005, y = z + 0.01)) +
+  labs(title = "Trace plot of first 100 steps")
+```
+
+
+```{r}
+ggplot(xz, aes(x, z)) +
+  geom_point(color = "seagreen", alpha = 0.4) +
+  stat_ellipse(level = 0.98, color = "black", size = 2) +
+  stat_density_2d(color = "grey", linewidth = 1)
+```
+
+
+
+
+```{r}
+ggplot(xz, aes(x, z)) +
+  stat_density_2d(aes(fill = after_stat(level)),
+              geom = "polygon", color = "white") +
+  scale_fill_viridis_c()
+```
+
+
+## Random image
+
+*I'm not sure this is working correctly.*
+
+```{r}
+beta = 5
+L = 20
+
+Nsteps = 10000
+print_iter = 1000
+
+
+image_initial = matrix(sample(c(0, 1), L ^ 2, replace = TRUE),
+                       nrow = L)
+
+image_initial = matrix(rep(0, L ^ 2), nrow = L)
+
+
+image_current = image_initial
+
+for (n in 1:Nsteps) {
+  # proposed pixel to flip
+  x_proposed = sample(1:L, 1)
+  y_proposed = sample(1:L, 1)
+  
+  # find neighbors of proposed pixel
+  # interior pixels have four neighbors each
+  # unique, max/min, and which below are just
+  # to correct for corners and edges
+  
+  neighbor_proposed = unique(
+    rbind(
+      c(x_proposed, min(y_proposed + 1, L)),
+      c(x_proposed, max(y_proposed - 1, 1)),
+      c(min(x_proposed + 1, L), y_proposed),
+      c(max(x_proposed - 1, 1), y_proposed)
+    )
+  )
+  
+  neighbor_proposed = 
+    neighbor_proposed[-which(
+      (( neighbor_proposed[1, ] == x_proposed) &
+         (neighbor_proposed[2, ] == y_proposed) )), ]
+  
+  # for current configuration, number of neighbors proposed state matches
+  sum_current = sum(image_current[x_proposed, y_proposed] == image_current[neighbor_proposed])
+  
+  # for proposed configuration, number of neighbors proposed state matches
+  sum_proposed = sum((1 - image_current[x_proposed, y_proposed]) == image_current[neighbor_proposed])
+  
+  accept_prob = min(1, exp(beta * (sum_proposed - sum_current)))
+  
+  color_current = image_current[x_proposed, y_proposed]
+  
+  image_current[x_proposed, y_proposed] = sample(c(1 - color_current,
+                                                   color_current), 1,
+                                                 prob = c(accept_prob,
+                                                          1 - accept_prob))
+  
+  if ( n %% print_iter == 0 ) {
+    image(1:L, 1:L, t(image_current),
+          xlab = "", ylab = "",
+          zlim = c(0, 1), xaxt = "n", yaxt = "n",
+          col = c("white", "black"))
+    grid(L, L)
+  }
+}
+
+```
+
+## Optimization: Knapsack problem
+
+- 1000 items, number 1, ..., 1000
+- weight of item $i^2$ is $i^2$
+- value of item $i$ is $i\log(i)$
+- knapsack threshold is 1/3 of the total weight of all items
+
+```{r}
+# test case
+# n = 4
+# w = c(1, 5, 3, 4)
+# v = c(15, 10, 9, 5)
+# L = 8
+# optimal solution is (1, 0, 1, 1) with value 29
+
+
+n = 1000 # number of items
+w = (1:n) ^ 2
+v = (1:n) * log(n)
+L = sum(w) / 3
+```
+
+
+Run 100000 repetitions and print after each set of 10000 reps
+
+- total number of items included on the rep
+- total weight
+- total value
+
+
+```{r}
+x = rep(0, n)
+
+Nsteps = 100000
+xn = matrix(rep(NA, Nsteps * n), nrow = Nsteps)
+vn = rep(NA, n)
+wn = rep(NA, n)
+
+for (i in 1:Nsteps){
+  y = x
+  j = sample(1:n, size = 1)
+  y[j] = 1 - x[j]
+  if (sum(y * w) <= L) {
+    a = min(1, sum(y * v) / sum(x * v))
+    x[j] = sample(c(y[j], x[j]), size = 1, prob = c(a, 1 - a))
+  }
+  xn[i,] = x
+  vn[i] = sum(x * v)
+  wn[i] = sum(x * w)
+  if ((i %%  10000) == 0){
+    print(c(sum(x), sum(x * v), sum(x * w)))
+  }
+}
+```
+
+Plot value and weight for each step
+
+```{r}
+plot(10001:Nsteps, vn[-(1:10000)], type = "l")
+plot(10001:Nsteps, wn[-(1:10000)], type = "l")
+abline(h = L, col = "orange")
+```
+
+Approximate optimal solution is highest value among states explored
+
+```{r}
+# on which step did the max occur
+optimal_step = which(vn == max(vn))
+optimal_step
+
+
+# which items are included
+items_included = which(xn[max(optimal_step), ] == 1)
+
+# weight and value for items included
+knapsack = data.frame(items_included,
+           weight = w[items_included],
+           value = v[items_included]) |>
+  arrange(desc(value))
+
+knapsack |> head(10) |> kbl() |> kable_styling()
+```
+
+
+```{r}
+#| eval: false
+
+
+# run this for a searchable HTML table
+# does not work with PDF output
+DT::datatable(knapsack)
+```
+
+
+
+```{r}
+# total weight
+sum(knapsack$weight)
+
+# as fraction of weight threshold
+sum(knapsack$weight) / L
+```
+
+
+```{r}
+# total value
+sum(knapsack$value)
+
+# as fraction of total value of all items
+sum(knapsack$value) / sum(v)
+```
+
+
+## Cryptography
+
+*This code is very old and adapted from Dobrow, Introduction to Stochastic Processes with R.*
+*The code can be way simplified.*
+
+```{r}
+#| echo: false
+#| code-overflow: wrap
+
+message = "now this is a story all about how my life got flipped turned upside down and id like to take a minute just sit right there ill tell you how i became the prince of a town called belair in west philadelphia born and raised on the playground was where i spent most of my days chillin out maxin relaxin all cool and all shooting some bball outside of the school when a couple of guys who were up to no good started making trouble in my neighborhood i got in one little fight and my mom got scared she said youre movin with your auntie and uncle in belair"
+
+```
+
+Text functions
+
+```{r}
+# ascii(char) returns the numerical ascii value for char
+
+ascii <- function(char) {
+  strtoi(charToRaw(char), 16L) #get 'raw' ascii value
+} 
+
+# charIndex takes in a character and returns its 'char value'
+# defined as a=1, b=2, ..., z=26, space=27
+# this matches the matrix in Austen counts
+
+char_index <- function(char) {
+  aValue <- ascii(char)
+  if (aValue == 32) {
+    27
+  } else {
+    #ascii sets "a" as 97, so subtract 96
+    aValue - 96
+  }
+}
+
+```
+
+
+Function to decrypt the coded message given a particular cipher
+
+```{r}
+# Decrypts code according to current_cipher
+decrypt <- function(code, current_cipher) {
+  out <- code
+  # for each character in the message, decode it according to the current_cipher
+  for (i in 1:nchar(code)) {
+    char_ind <- char_index(substr(code, i, i))
+    if (char_ind < 27) {
+      # change the ith character to the character determined by the current_cipher
+      substr(out, i, i) <- rawToChar(as.raw(current_cipher[char_ind] + 96))
+    }
+  }
+  out 
+}
+```
+
+Secret message that we want to decode
+
+```{r}
+# the scrambled message
+coded_message <- decrypt(message, sample(1:26))
+
+coded_message
+```
+
+
+Function to score the cipher based on how well the decoded message resembles real text
+
+```{r}
+mat <- read.table("AustenCount.txt", header = F)
+logmat <- log(mat + 1)
+
+# Computes the score of the decoded message using the given code
+score <- function(code) {  
+  p <- 0
+  # For each pair of letters in the decoded message
+  # query the transition matrix for the probability of that pair
+  for (i in 1:(nchar(code) - 1)){
+    p <- p + logmat[char_index(substr(code, i, i)),
+                    char_index(substr(code, i + 1, i + 1))]
+  }
+  # return the sum of these probabilities
+  p
+}
+```
+
+Run 10000 steps of the MCMC algorithm
+
+(Code records scores of ciphers we have already seen so we don't have to rescore them if we revisit the cipher.)
+
+```{r}
+#| code-overflow: wrap
+
+
+# instantiate a map to hold previously computed codes' scores
+map <- new.env(hash = T, parent = emptyenv())
+
+# we begin with (a-> a, ..., z-> z) function for decrypting the coded message
+current_cipher <- 1:27
+
+# calculate the score for current_cipher and store it in the map
+current_score <- score(decrypt(coded_message, current_cipher))
+
+map[[paste(current_cipher, collapse='')]] <- current_score
+
+max_score = current_score
+
+max_score_cipher = current_cipher
+
+# run 10000 iterations of the Metropolis-Hastings algorithm
+for (iteration in 1:10000) {
+  # sample two letters to swap
+  swaps <- sample(1:26, 2)
+  old_cipher <- current_cipher
+  
+  # swap two letters
+  current_cipher[swaps[1]] <- old_cipher[swaps[2]]
+  current_cipher[swaps[2]] <- old_cipher[swaps[1]]
+  
+  # if we have already scored this decoding,
+  # retrieve score from our map
+  if (exists(paste(current_cipher, collapse = ''), map)) {
+    new_score <- map[[paste(current_cipher, collapse = '')]]
+  } else {
+    # if we have not already scored this decoding,
+    # calculate it and store it in the map
+    new_score <- score(decrypt(coded_message, current_cipher))
+    map[[paste(current_cipher, collapse = '')]] <- new_score
+  }
+  
+  if (new_score > max_score) {
+    max_score = new_score
+    max_score_cipher = current_cipher
+  }
+  
+  # decide whether to accept current cipher
+  if (runif(1) > exp(new_score - current_score)) {
+    current_cipher <- old_cipher
+  } else 
+  {
+    current_score <- new_score
+  }
+  
+  # print out our decryption every 1000 iterations
+  if ((iteration %%  1000) == 0) {
+    print(c(iteration, decrypt(coded_message, current_cipher)))
+  }
+}
+
+
+```
+
+
+Message decoded using highest scoring cipher explored (should be pretty close to the real message; we can use our knowledge to fill in the rest).
+
+
+```{r}
+#| code-overflow: wrap
+
+
+decrypt(coded_message, max_score_cipher)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

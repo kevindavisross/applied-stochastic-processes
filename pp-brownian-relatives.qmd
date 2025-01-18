@@ -1,0 +1,12 @@
+# Relatives of Brownian Motion {.unnumbered}
+
+
+
+
+(@) Suppose that the price (dollars) of a stock can be reasonably modeled as a Geometric Brownian motion with drift $\mu=0.05$ per year and scale parameter $\sigma = 0.20$ per year.
+Compute the probability that the stock price 2 years from now is 10% greater than the stock price 1 year from now.
+
+(@) Let $U(t)$ represent the difference (in percentage points) between an interest rate and some benchmark.
+(For example, $U$ is 0 when the interest rate is equal to the benchmark, $U$ is -1 if the interest rate is 1 percentage point below the benchmark, etc.)
+Assume that $U(t)$ follows an Ornstein-Uhlenbeck process.
+If the interest rate is currently 3 percentage points below the benchmark, find the probability that the interest rate is more than 1.5 percentage point below the benchmark 2 units of time from now.

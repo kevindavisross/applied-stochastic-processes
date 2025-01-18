@@ -1,0 +1,24 @@
+# Exponential distributions {.unnumbered}
+
+1. Xiomara and Rogelio each leave work at noon to meet the other for lunch.
+The amount of time, $X$, that it takes Xiomara to arrive is a random variable with an Exponential distribution with mean 10 minutes.
+The amount of time, $Y$, that it takes Rogelio to arrive is a random variable with an Exponential distribution with mean 20 minutes.
+Assume that $X$ and $Y$ are independent.
+Let $L=\max(X, Y) - \min(X, Y)$ be the amount of time, in minutes, that the first person to arrive has to wait for the second person to arrive.
+
+    *Solve the following without doing any calculus, using properties of Exponential distributions as much as possible.*
+
+    a. Compute the conditional probability that Xiomara has to wait more than 15 minutes for Rogelio to arrive, given that Xiomara arrives first.
+    a. Compute the conditional probability that Rogelio has to wait more than 15 minutes for Xiomara to arrive, given that Rogelio arrives first.
+    a. Compute and interpret $\text{P}(L > 15)$.
+
+
+1. The lifetime of a laptop battery has an Exponential distribution with mean 6 hours, the lifetime of a cell phone batter has an Exponential distribution with mean 7 hours, and the lifetime of a tablet battery has an Exponential distribution with mean 9 hours.
+Assume the lifetimes are independent.
+
+    *Solve the following without doing any calculus, using properties of Exponential distributions as much as possible.*
+
+    a. Find the probability that all three last at least 5 hours.
+    a. Find the probability that each of the batteries is the first to run out.
+    a. Find the probability that all three batteries last at least 5 hours and the laptop battery is the first to run out.
+    a. Find the probability that all three batteries last at least 5 hours given that the laptop battery is the first to run out.

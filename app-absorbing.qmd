@@ -1,0 +1,79 @@
+# More Markov Chains {.unnumbered}
+
+
+## Part 1
+
+This part concerns this [Riddler Classic](https://fivethirtyeight.com/features/can-you-get-the-gloves-out-of-the-box/) problem from FiveThirtyEight.
+Note: you can find [solutions here](https://fivethirtyeight.com/features/can-you-tell-when-the-snow-started/), but you should try the problem on your own without looking at solutions.
+
+You roll a fair six-sided die 6 times.
+Whatever the results, you paint those on the sides of a *blank* die.
+So, if your rolls were 4, 5, 2, 6, 1, 1, then your new die has no 3's and two 1's.
+Then, you repeat the process with your new die --- roll it 6 times and paint the results on a blank die. Eventually, you'll roll the same number 6 times, at which point the process stops.
+Let $T$ = the number of rounds (of 6 rolls each) that you perform until stopping.
+(If your 6 rolls in the first round all result in the same number, then you stop with $T=1$.)
+
+
+1. Code and run a simulation to approximate the distribution of $T$ and its expected value, *without using Markov chains*.
+Summarize the approximate distribution in an appropriate plot, and describe the distribution in 2-3 sentences (e.g., compute and interpret a few percentiles).
+
+1. Define a Markov chain that will help you find $\text{E}(T)$.
+Be sure to clearly define the state space.
+(Note: there are several ways to do this; any one is fine just be clear in your choice.)
+
+1. Determine the transition matrix for your Markov chain.
+You might want to compute a few of the transition probabilities by hand, but you'll probably need to write code to fill in the whole matrix.
+
+1. Use the transition matrix and tools from class to solve for $\text{E}(T)$.
+Compare to the simulated value from part 1.
+
+1. Use the transition matrix and tools from class to solve for the distribution of $T$, and display the distribution in an appropriate plot.
+Compare to the simulated distribution from part 1.
+
+
+
+```{r}
+#| echo: false
+#| eval: false
+#| include: false
+
+
+x = expand_grid(x1 = 0:7, x2 = 0:7, x3 = 0:7, x4 = 0:7, x5 = 0:7, x6 = 0:7) |> mutate(xsum = rowSums(across(where(is.numeric)))) |> filter(xsum == 6)
+```
+
+## Part 2
+
+
+In this part you will create and solve your own problems involving Markov chains.
+You have lots of flexibility, but your problems should include at least one part that requires
+
+- A simulation
+- An analytical solution that uses either first step analysis/absorption
+- An analtyical solution that uses stationary distributions/long run behavior
+
+The problems do not necessarily need to be more difficult than the ones we have seen in class.
+However, you are strongly encouraged to be creative!
+
+The problems that you construct should be your own creation, and your solutions should be your own work.
+You are NOT allowed to copy material from outside sources.
+You can consult sources, but you must CITE any sources that you consult and include references (e.g., to justify a numerical value of a probability in context, or to get some inspiration).
+In particular, you can NOT just copy an exercise or its solution from a textbook or other online source.
+To repeat: The problems that you construct should be your own creation, and your solutions should be your own work.
+
+
+You can have one big problem/context with multiple parts, or separate problems/contexts with single parts.
+Choose contexts that are interesting to you.
+Be creative!
+The context doesn’t have to be entirely realistic but it should be reasonable.
+Explain why you chose your context and briefly justify your assumptions.
+You do not have to find related data, but if you are able to, that is one way to justify your assumptions.
+(Be sure to cite any sources). 
+
+
+
+Solve the problems using software (or by hand if appropriate), detailing all your steps as if you are teaching someone how to solve the problem.
+You should rely on properties we have seen in the course as much as possible without rederiving things from scratch.
+You can assume the person you are teaching has seen all the topics and concepts that we have; they just haven’t seen your problems before.
+
+
+

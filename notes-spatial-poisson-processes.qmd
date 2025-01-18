@@ -1,0 +1,35 @@
+# Spatial Poisson Processes, and Relatives of Poisson Processes {.unnumbered}
+
+
+## Spatial Poisson Process
+
+```{r}
+N = rpois(1, 0.1 * 20 * 10)
+u1 = runif(N, 0, 20)
+u2 = runif(N, 0, 10)
+plot(u1, u2, pch = 20,
+     xlab = "x-coordinate", ylab = "y-coordinate",
+     main = "Spatial Poisson Process on 20x10 area with intensity 0.1")
+
+
+```
+
+
+## Distance from center to closest point
+
+
+```{r}
+n_rep = 10000
+R = rep(NA, n_rep)
+
+for (i in 1:n_rep) {
+  N = rpois(1, 0.1 * 20 * 10)
+  u1 = runif(N, 0, 20)
+  u2 = runif(N, 0, 10)
+  R[i] = min(sqrt((u1 - 10) ^ 2 + (u2 - 5) ^ 2))
+}
+
+hist(R, freq = FALSE)
+
+```
+

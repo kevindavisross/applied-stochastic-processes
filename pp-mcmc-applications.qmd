@@ -1,0 +1,7 @@
+# Some Applications of Markov Chain Monte Carlo (MCMC) Methods {.unnumbered}
+
+You will use MCMC methods to solve this FiveThirtyEight [Riddler Classic]( https://fivethirtyeight.com/features/who-will-win-riddler-jeopardy/) problem.
+
+a. Describe in words in detail how you could use an MCMC approach to solve the problem.
+a. Code and run your algorithm from the previous part.
+Compare to the [solution](https://fivethirtyeight.com/features/can-you-solve-this-astronomical-enigma/); did your algorithm work?

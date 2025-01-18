@@ -1,0 +1,50 @@
+# Discrete Time Markov Chains: Steady State Distributions {.unnumbered}
+
+Suppose that bases (letters) in DNA sequences can be modeled as a Markov chain with state space (A, C, G, T) and transition matrix
+
+```{r}
+P = rbind(
+  c(0.36, 0.15, 0.20, 0.29),
+  c(0.41, 0.16, 0.04, 0.39),
+  c(0.30, 0.21, 0.14, 0.35),
+  c(0.31, 0.19, 0.18, 0.32)
+)
+```
+
+
+```{r}
+#| echo: false
+
+library(kableExtra)
+
+state_names = c("A", "C", "G", "T")
+
+row.names(P) = state_names
+
+kbl(P, col.names = state_names) |>
+  column_spec(1, bold = TRUE) |>
+  kable_styling()
+```
+
+
+(@) One of the following is the  unique stationary distribution.
+Identify which one it is and explain your reasoning conceptually without doing any calculations.
+
+\begin{align*}
+\boldsymbol{\pi}_1 & = [0.1742, 0.3430, 0.3266, 0.1562]\\
+\boldsymbol{\pi}_2 & = [0.3430, 0.1742, 0.1562, 0.3266]\\
+\boldsymbol{\pi}_3 & = [0.4935, 0.0093, 0.0057, 0.4915]
+\end{align*}
+
+
+(@) Now use software to find the stationary distribution.
+
+(@) Find the probability that C is followed two letters later by T.
+
+(@) Find the probability that A is followed two letters later by T.
+
+(@) Find the probability that C is followed 100 letters later by T.
+
+(@) Find the probability that A is followed 100 letters later by T.
+
+(@) Find the probability that a three letter sequences spell "CAT".

@@ -1,0 +1,64 @@
+# Costco Time Markov Chains {.unnumbered}
+
+Cars arrive at the Costco gas station at rate $\lambda=1$ car per minute.
+
+- Cars arrive one-way to enter the gas station.
+- There are 3 islands with 2 pumps on each side, for a total of 12 pumps.
+Label the pumps in the back from left to right as 1, 2, $\ldots$, 6, and the pumps in front from left to right as 7, 8, $\ldots$, 12.
+- When cars arrive they join one of 6 queues, one queue for each side of the islands.
+There is one queue that waits for pumps 1 and 7, one that  waits for pumps 2 and 8, and so on.
+The car first in  line in the queue for pumps 1 and 7 will move to whichever one opens up first, similarly for 2 and 8, and so on.
+- There are 3 different types of cars: 30% of cars will only join the queues on the left (to wait for one of the odd numbered pumps), 30% of cars will only join the queues on the right (to wait for an even numbered pump), and the remaining cars will join any queue.
+(Idea: the pumps are supposed to reach to either side of a car, but this is harder to do for some cars (e.g. minivans), so some cars will only join the queues corresponding to which side their gas tank is on.)
+- When a car arrives, it will join whichever queue of its type is the shortest.
+If there is a tie for shortest queue of its type, the car will choose at random among the shortest queue options.
+- Once a car chooses a queue, it does not switch to another or leave the gas station before completing service.
+- Assume each pump serves customers at Exponential rate $\mu=0.2$ cars per minute, independent of the customer type.
+You can assume that once a car completes service the next car in the queue starts service immediately.
+(Essentially, you can assume that any time between when one car finishes pumping and the next one starts has been accounted for in the service rate.)
+
+
+
+
+
+## Part 1
+
+Let $X_i(t)$ denote the number of customers in queue $i=1,\ldots,6$ at time $t$, including any customers in service at the corresponding pumps.
+The process $X(t)=(X_1(t), \ldots, X_6(t))$ is a vector-valued continuous time Markov chain.
+Let $S(t) = X_1(t) + \cdots + X_6(t)$ denote the total number of customers in the system at time $t$, including any customers in service.
+
+Write a program to simulate the customer arrivals and services and the values of $X_i(t)$ over a long time period, say a week.
+You will use your simulation results to approximate the following items, so consider all parts below when designing your code.
+
+
+- The long run distribution of the **number of cars in the system (waiting or in service)**.
+- The long run fraction of time there are no cars in the system.
+- The long run average number of customers in the system.
+- Any other features of the long run distribution of the number of cars in the system you're interested in
+- The long run distribution of the **amount of time a customer spends in the system (waiting time + service time)**.
+(This will require more work than just finding the number of customers in the system.  You will need to track individual customers from the time they enter until the time they leave.)
+- The average time a customer spends in the system.
+- Any other features of the long run distribution of the amount of time a customer spends in the system you're interested in
+
+
+*Hints:*
+
+- Consider a simplified version of the problem first.
+For example, what if there's only one pump, one line, and one customer type?
+- Rely on properties of Exponential race/Poisson thinning as much as possible.
+
+
+## Part 2.
+
+Change some features of the set up and investigate how your changes effect the average number of customers in the system, and the average time a customer spends in the system. 
+There are lots of things you can do. Here are just a few suggestions, but I encourage you to be creative!
+
+- Change the parameters $\lambda$, $\mu$, or the distribution of customer types.
+Maybe each pump has its own service rate.
+- Change the layout of the station, say still 12 pumps but arranged 4x3 instead of 6x2.
+- Have all the cars wait in a single line, or two lines (based on type, with one type joining either line)
+- Assume that if each queue reaches a certain length, any arriving cars will just leave.
+Or assume that an arriving car only joins a queue with some probability that decreases the longer the line is.
+- Change arrival or service times to something other than Exponential, but note that this makes the problem significantly harder because you can't rely on the memoryless property anymore.
+
+

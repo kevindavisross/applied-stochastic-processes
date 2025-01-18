@@ -1,0 +1,28 @@
+# Poisson Processes {.unnumbered}
+
+*You should solve these problems with as few calculations as possible, relying on properties of Poisson processes as much as possible.*
+
+(@) Calls arrive at a customer service center according to a Poisson process with with $\lambda=3$ calls per minute.
+Compute and interpret the following quantities.
+
+a. $\text{E}(N_1)$.
+a. $\text{SD}(N_1)$.
+a. $\text{P}(N_1=2)$.
+a. $\text{P}(N_1=2, N_3=6)$.
+a. $\text{P}(N_1=2|N_3=6)$.
+a. $\text{P}(N_3=6|N_1=2)$.
+a. $\text{E}[N_{15}|N_{10}=8]$
+a. $\text{E}[N_{10}|N_{15}=8]$.
+a. $\text{Cov}(N_{10}, N_{15})$.
+a. $\text{Corr}(N_{10}, N_{15})$.
+
+(@) Arrivals of spam emails to your email spam filter follow a Poisson process with mean rate 1.5 spam emails per minute.
+For the parts below in addition to computing, denote the corresponding probability in terms of proper symbols and notation.
+
+a. Compute the probability that exactly 4 spam emails arrive to the filter in the next 2 minutes.
+a. Compute the conditional probability that more than 3 minutes elapse, starting now, before the next spam email arrives, given that the most recent spam email arrived 2 minutes ago.
+a. Compute the probability that the next spam email arrives some time after 3 minutes but before 5 minutes from now.  
+a. Compute the probability that exactly one spam email arrives in the time interval from 3 minutes to 5 minutes from now. 
+a. If only 1 spam email arrives in the next 5 minutes, compute the conditional probability that it arrives in the next minute.
+a. Compute the conditional probability that 2 spam emails arrive in the  first minute, given that 5 spam emails arrive in the first 3 minutes.
+

@@ -1,0 +1,57 @@
+# Random Variables: Joint, Conditional, and Marginal Distributions {.unnumbered}
+
+
+
+
+
+
+The latest series of collectible Lego Minifigures contains 3 different Minifigure prizes (labeled 1, 2, 3).
+Each package contains a single unknown prize.
+Suppose we only buy 3 packages and we consider as our sample space outcome the results of just these 3 packages (prize in package 1, prize in package 2, prize in package 3).
+For example, 323 (or (3, 2, 3)) represents prize 3 in the first package, prize 2 in the second package, prize 3 in the third package.
+Let $X$ be the number of distinct prizes obtained in these 3 packages.
+Let $Y$ be the number of these 3 packages that contain prize 1.
+Suppose that each package is equally likely to contain any of the 3 prizes, regardless of the contents of other packages; let $\text{P}$ denote the corresponding probability measure.
+
+It can be shown that the joint distribution of $X$ and $Y$ can be represented by the following table.
+
+| $\text{P}(X = x, Y=y)$ |      |      |      |      |
+|------------------------|-----:|-----:|-----:|-----:|
+|                        |  $y$ |      |      |      |
+| $x$                    |    0 |    1 |    2 |    3 |
+| 1                      | 2/27 |    0 |    0 | 1/27 |
+| 2                      | 6/27 | 6/27 | 6/27 |    0 |
+| 3                      |    0 | 6/27 |    0 |    0 |
+
+
+1. Briefly explain why there are 27 possible outcomes.
+1. Show that $\text{P}(X = 1, Y = 0) = 2/27$ by listing the outcomes that comprise the event $\{X = 1, Y = 0\}$.
+1. Show that $\text{P}(X = 1, Y = 3) = 1/27$ by listing the outcomes that comprise the event $\{X = 1, Y = 3\}$.
+1. Show that $\text{P}(X = 2, Y = 0) = 6/27$ by listing the outcomes that comprise the event $\{X = 2, Y = 0\}$.
+1. Make a table representing the marginal distribution of $X$ and compute $\text{E}(X)$.
+1. Make a table representing the marginal distribution of $Y$ and compute $\text{E}(Y)$.
+1. Find the conditional distribution of $Y$ given $X=x$ for each possible value of $x$.
+1. Make a table representing the distribution of $\text{E}(Y|X)$.
+1. Find the conditional distribution of $X$ given $Y=y$ for each possible value of $y$.
+1. Make a table representing the distribution of $\text{E}(X|Y)$.
+1. Describe three methods for how you could use physical objects (e.g., cards, dice, spinners) to simulate an $(X, Y)$ pair with the joint distribution given by the table above.
+    a. Method 1: simulate outcomes from the probability space (i.e., prizes in the packages)
+    a. Method 2: simulate an $(X, Y)$ pair directly from the joint distribution (without simulating outcomes from the probability space)
+    a. Method 3: simulate an $(X, Y)$ pair by first simulating $X$ from directly from its marginal distribution (without simulating outcomes from the probability space).
+1. Suppose you have simulated many $(X, Y)$ pairs.
+Explain how you could use the simulation results to approximate each of the following.
+You should not do any of the calculations; rather, explain in words how you would use the simulation results and simple operations like counting and averaging. 
+    a. $\text{P}(X = 3)$
+    a. the marginal distribution of $X$
+    a. $\text{E}(X)$
+    a. $\text{Var}(X)$
+    a. $\text{P}(X = 2, Y = 1)$
+    a. $\text{E}(XY)$
+    a. $\text{Cov}(X, Y)$
+    a. $\text{P}(X = 1 | Y = 0)$
+    a. the conditional distribution of $X$ given $Y=0$
+    a. $\text{E}(X|Y=0)$
+    a. $\text{P}(Y = 0 | X = 1)$
+    a. the conditional distribution of $Y$ given $X=1$
+    a. $\text{E}(Y|X=1)$
+

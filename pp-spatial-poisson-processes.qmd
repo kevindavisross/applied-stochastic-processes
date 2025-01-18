@@ -1,0 +1,20 @@
+# Spatial Poisson Processes, and Relatives of Poisson Processes {.unnumbered}
+
+*You should solve these problems with as few calculations as possible, relying on properties of Poisson processes as much as possible.*
+
+(@) In a 2-d spatial Poisson process with intensity $\lambda$, let $X$ represent the *nearest neighbor distance*, that is, the distance between an arbitrary point and the point of the process closest to it.
+
+a. Find an expression for $\text{P}(X > x)$, for $x>0$.
+a. Find an expression for the probability density function (pdf) of $X$.
+a. Find an expression for $\text{E}(X)$.
+
+
+(@) Starting at 9 a.m., customers arrive at a store according to a nonhomogeneous Poisson process with intensity function $\lambda(t) = t^2$, for $t>0$, where the time is measured in hours.
+Find the probability mass function of the number of customers who enter the store by noon.
+
+(@) Suppose points are distributed in a 2-d region centered at the origin according to a nonhomogeneous, spatial Poisson process $\{N_A\}$ with intensity function
+$$
+\lambda(x, y) = e^{-(x^2 + y^2)}
+$$
+Let $R$ be the distance from the origin to the nearest point.
+Compute $\text{P}(R > 1)$.

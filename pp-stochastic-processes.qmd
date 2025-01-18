@@ -1,0 +1,39 @@
+# Introduction to Stochastic Processes {.unnumbered}
+
+
+
+
+
+
+A stochastic process $X(t)$ is defined by
+$$
+X(t) = A+Bt, \qquad t\ge0
+$$
+where $A$ and $B$ are discrete random variables with joint pmf
+
+
+
+|     |     |     |
+|:----|----:|----:|
+|     | *b* |     |
+| *a* |   0 |   1 |
+| 0   | 0.1 | 0.3 |
+| 2   | 0.2 | 0.4 |
+
+Note: this process is unlike most of the processes we'll study in that all of the randomness in this process is resolved at time 0, while most of the processes we'll study will truly experience randomness over time.
+But this process gives you an example where you can explicitly draw some sample paths as simple functions of time.
+
+1. Draw a plot of all possible sample paths of this stochastic process.
+Your plot should be well drawn with well labeled axes.
+1. Is $X(t)$ a discrete or continuous *time* process?
+1. Is $X(t)$ a discrete or continuous *state* process?
+1. Specify the joint distribution of $X(2)$ and $X(3)$.
+1. Specify the distribution of $X(2)$.
+1. Compute $\text{E}(X(2))$.
+1. Compute $\text{Var}(X(2))$.
+1. Specify the distribution of $X(3)$.
+1. Compute $\text{E}(X(3))$.
+1. Compute $\text{Var}(X(3))$.
+1. Compute $\text{Cov}(X(2), X(3))$.
+1. Find an expression for $\text{E}(X(t))$ as a function of $t$ (this is called the *mean function* of $X(t)$).
+1. Find an expression for $\text{Var}(X(t))$ as a function of $t$ (this is called the *variance function* of $X(t)$).

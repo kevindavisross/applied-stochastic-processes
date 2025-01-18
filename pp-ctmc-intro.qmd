@@ -1,0 +1,28 @@
+# Introduction to Continuous Time Markov Chains {.unnumbered}
+
+
+(@) Let $\{X(t),t\ge0\}$ be a continuous time Markov chain with
+state space $S=\{1,2,3,4\}$ and
+transition rate matrix $Q$:
+
+$$
+\mathbf{Q} = 
+\begin{bmatrix}
+ & 1 & 0 & 1\\
+2 &  & 2 & 0\\
+0 & 3 &  & 3\\
+4 & 0 & 4 & \\
+\end{bmatrix}
+$$
+
+a. Find the diagonal entries of $\mathbf{Q}$.
+a. Explain in full detail how you could simulate the process for a long time using only (1) a coin, and (2) an Exponential(1) spinner.
+
+
+(@) A system is composed of $5$ machines.
+A machine operates for an Exponentially distributed amount of time with rate $\mu=1$ and then fails.
+When a machine fails it undergoes repair; repair times are Exponential distributed with rate $\lambda=2$.
+Let $X(t)$ represent the number of machines operating at time $t$; then $\{X(t)\}$ is a CTMC.
+Find the rate matrix of the CTMC.
+
+

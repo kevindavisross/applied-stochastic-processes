@@ -1,0 +1,236 @@
+---
+title: "PP: Joint, Conditional, and Marginal Distributions"
+author: "Rachel Roggenkemper"
+date: "January 8, 2025"
+format: pdf
+editor: visual
+---
+
+**The latest series of collectible Lego Minifigures contains 3 different Minifigure prizes (labeled 1, 2, 3). Each package contains a single unknown prize. Suppose we only buy 3 packages and we consider as our sample space outcome the results of just these 3 packages (prize in package 1, prize in package 2, prize in package 3). For example, 323 (or (3, 2, 3)) represents prize 3 in the first package, prize 2 in the second package, prize 3 in the third package. Let** $X$ **be the number of distinct prizes obtained in these 3 packages. Let** $Y$ **be the number of these 3 packages that contain prize 1. Suppose that each package is equally likely to contain any of the 3 prizes, regardless of the contents of other packages; let** $P$ **denote the corresponding probability measure.**
+
+**It can be shown that the joint distribution of** $X$ **and** $Y$ **can be represented by the following table.**
+
+$P(X=x,\;Y=x)$
+
+|       | $y$   |       |       |       |
+|-------|-------|-------|-------|-------|
+| $x$   | **0** | **1** | **2** | **3** |
+| **1** | 2/27  | 0     | 0     | 1/27  |
+| **2** | 6/27  | 6/27  | 6/27  | 0     |
+| **3** | 0     | 6/27  | 0     | 0     |
+
+**1. Briefly explain why there are 27 possible outcomes.**
+
+There are 27 possible outcomes because in each of the 3 packages, any of the 3 prizes could occur, and $3*3*3 = 27$.
+
+1.  1, 1, 1 -\> X=1, Y=3
+2.  1, 1, 2 -\> X=2, Y=2
+3.  1, 1, 3 -\> X=2, Y=2
+4.  1, 2, 1 -\> X=2, Y=2
+5.  1, 3, 1 -\> X=2, Y=2
+6.  1, 2, 3 -\> X=3, Y=1
+7.  1, 3, 2 -\> X=3, Y=1
+8.  1, 2, 2 -\> X=2, Y=1
+9.  1, 3, 3 -\> X=2, Y=1
+10. 2, 1, 3 -\> X=3, Y=1
+11. 2, 3, 1 -\> X=3, Y=1
+12. 2, 2, 2 -\> X=1, Y=0
+13. 2, 1, 1 -\> X=2, Y=2
+14. 2, 3, 3 -\> X=2, Y=0
+15. 2, 1, 2 -\> X=2, Y=1
+16. 2, 3, 2 -\> X=2, Y=0
+17. 2, 2, 1 -\> X=2, Y=1
+18. 2, 2, 3 -\> X=2, Y=0
+19. 3, 1, 2 -\> X=3, Y=1
+20. 3, 2, 1 -\> X=3, Y=1
+21. 3, 3, 3 -\> X=1, Y=0
+22. 3, 2, 2 -\> X=2, Y=0
+23. 3, 1, 1 -\> X=2, Y=2
+24. 3, 3, 1 -\> X=2, Y=1
+25. 3, 3, 2 -\> X=2, Y=0
+26. 3, 1, 3 -\> X=2, Y=1
+27. 3, 2, 3 -\> X=2, Y=0
+
+**2. Show that** $P(X=1,\;Y=0) = 2/27$ **by listing the outcomes that comprise the event {**$X=1,Y=0$**}.**
+
+(2, 2, 2) -\> X=1, Y=0
+
+(3, 3, 3) -\> X=1, Y=0
+
+3\. **Show that** $P(X=1,\;Y=3) = 1/27$ **by listing the outcomes that comprise the event {**$X=1,Y=3$**}.**
+
+(1, 1, 1) -\> X=1, Y=3
+
+4\. **Show that** $P(X=2,\;Y=0) = 6/27$ **by listing the outcomes that comprise the event {**$X=2,Y=0$**}.**
+
+(2, 3, 3) -\> X=2, Y=0
+
+(2, 3, 2) -\> X=2, Y=0
+
+(2, 2, 3) -\> X=2, Y=0
+
+(3, 2, 2) -\> X=2, Y=0
+
+(3, 3, 2) -\> X=2, Y=0
+
+(3, 2, 3) -\> X=2, Y=0
+
+**5. Make a table representing the marginal distribution of** $X$ **and compute** $E(X)$**.**
+
+|          |      |       |      |
+|----------|------|-------|------|
+| **x**    | 1    | 2     | 3    |
+| **p(x)** | 3/27 | 18/27 | 6/27 |
+
+$E(X) = (1)(3/27) + (2)(18/27) + (3)(6/27) = 2.111$
+
+**6. Make a table representing the marginal distribution of** $Y$ **and compute** $E(Y)$**.**
+
+|          |      |       |      |      |
+|----------|------|-------|------|------|
+| **y**    | 0    | 1     | 2    | 3    |
+| **p(y)** | 8/27 | 12/27 | 6/27 | 1/27 |
+
+$E(Y) = (0)(8/27) + (1)(12/27) + (2)(6/27) + (3)(1/27) = 1$
+
+**7. Find the conditional distribution of** $Y$ **given** $X=x$ **for each possible value of** $x$**.**
+
+|                   |     |     |     |     |
+|-------------------|-----|-----|-----|-----|
+| **Y**             | 0   | 1   | 2   | 3   |
+| **P(Y \| X = 1)** | 2/3 | 0   | 0   | 1/3 |
+
+|                   |      |      |      |     |
+|-------------------|------|------|------|-----|
+| **Y**             | 0    | 1    | 2    | 3   |
+| **P(Y \| X = 2)** | 6/18 | 6/18 | 6/18 | 0   |
+
+|                   |     |     |     |     |
+|-------------------|-----|-----|-----|-----|
+| **Y**             | 0   | 1   | 2   | 3   |
+| **P(Y \| X = 3)** | 0   | 1   | 0   | 0   |
+
+**8. Make a table representing the distribution of** $E(Y|X)$**.**
+
+|       |                   |
+|-------|-------------------|
+| **X** | **E(Y \| X = x)** |
+| 1     | 1                 |
+| 2     | 1                 |
+| 3     | 1                 |
+
+**9. Find the conditional distribution of** $X$ **given** $Y=y$ **for each possible value of** $y$**.**
+
+|                   |     |     |     |
+|-------------------|-----|-----|-----|
+| X                 | 1   | 2   | 3   |
+| **P(X \| Y = 0)** | 2/8 | 6/8 | 0   |
+
+|                   |     |      |      |
+|-------------------|-----|------|------|
+| X                 | 1   | 2    | 3    |
+| **P(X \| Y = 1)** | 0   | 6/12 | 6/12 |
+
+|                   |     |     |     |
+|-------------------|-----|-----|-----|
+| X                 | 1   | 2   | 3   |
+| **P(X \| Y = 2)** | 0   | 1   | 0   |
+
+|                   |     |     |     |
+|-------------------|-----|-----|-----|
+| X                 | 1   | 2   | 3   |
+| **P(X \| Y = 3)** | 1   | 0   | 0   |
+
+**10. Make a table representing the distribution of** $E(X|Y)$**.**
+
+|     |               |
+|-----|---------------|
+| Y   | E(X \| Y = y) |
+| 0   | 1.75          |
+| 1   | 2.5           |
+| 2   | 2             |
+| 3   | 1             |
+
+**11. Describe three methods for how you could use physical objects (e.g., cards, dice, spinners) to simulate an** $(X,Y)$ **pair with the joint distribution given by the table above.**
+
+**a) Method 1: simulate outcomes from the probability space (i.e., prizes in the packages)**
+
+Assign equal probabilities (1/27) to all 27 outcomes, simulate by randomly selecting, compute X and Y to get an (X, Y) pair.
+
+**b) Method 2: simulate an** $(X,Y)$ **pair directly from the joint distribution (without simulating outcomes from the probability space)**
+
+Using the joint distribution, we have the probabilities for each (X, Y) pair, so randomly select an (X, Y) pair according to each of the pairs probabilities.
+
+**c) Method 3: simulate an** $(X,Y)$ **pair by first simulating** $X$ **from directly from its marginal distribution (without simulating outcomes from the probability space).**
+
+First simulate X using its marginal distribution, once you have an X, use the appropriate Y given X = x distribution giving you the Y.
+
+**12. Suppose you have simulated many** $(X,Y)$ **pairs. Explain how you could use the simulation results to approximate each of the following. You should not do any of the calculations; rather, explain in words how you would use the simulation results and simple operations like counting and averaging.**
+
+**a)** $P(X=3)$
+
+Number of pairs where X = 3 / number of total pairs
+
+**b) the marginal distribution of** $X$
+
+For each value of X, count how many times that X appears in a pair
+
+For each X, number of pairs where X is that x / number of total pairs
+
+**c)** $E(X)$
+
+Take an average of X from all pairs
+
+**d)** $Var(X)$
+
+$E(X^2) \approx$ average of all X's squared
+
+$Var(X) = E(X^2) - [E(X)]^2$
+
+**e)** $P(X=2,Y=1)$
+
+Number of pairs where X = 2 and Y =1 / total number of pairs
+
+**f)** $E(XY)$
+
+For all pairs, multiply X\*Y, then take average
+
+**g)** $Cov(X,Y)$
+
+$Cov(X,Y) = E(XY) - E(X)E(Y)$
+
+**h)** $P(X=1|Y=0)$
+
+Number of pairs where X = 1 and Y = 0 / number of pairs where Y = 0
+
+**i) the conditional distribution of** $X$ **given** $Y=0$
+
+Filter out to only look at pairs where Y = 0
+
+For each value of X, count how many times that X appears in a pair where Y = 0
+
+For each X, number of pairs where X is that x and Y = 0 / number of total pairs where Y = 0
+
+**j)** $E(X|Y=0)$
+
+Filter out to only look at pairs where Y = 0
+
+Take an average of all X values
+
+**k)** $P(Y=0|X=1)$
+
+Number of pairs where Y = 0 and X =1 / number of pairs where X = 1
+
+**l) the conditional distribution of** $Y$ **given** $X=1$
+
+Filter out to only look at pairs where X = 1
+
+For each value of Y, count how many times that Y appears in a pair where X = 1
+
+For each Y, number of pairs where Y is that y and X = 1 / number of total pairs where X = 1
+
+**m)** $E(Y|X=1)$
+
+Filter out to only look at pairs where X = 1
+
+Take an average of all Y values

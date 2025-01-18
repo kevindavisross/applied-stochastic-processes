@@ -1,0 +1,25 @@
+# Introduction to Markov Chains {.unnumbered}
+
+In each of the following, briefly explain why $\{X_n\}$ is a Markov chain, specify its transition matrix, and draw a state diagram.
+
+
+
+(@) Rihanna has three umbrellas, some at her office and some at home.
+If she is leaving home in the morning (or leaving work at night) and it is raining, she will take an umbrella if there is one there (otherwise, she gets wet).
+Assume that, independent of the past, it rains on each trip with probability 0.2.
+
+    Let $X_n$ be the number of umbrellas at her current location.
+
+
+(@) Consider a retail store that sells a particular item (say a TV).  Each day they experience customer demand of 0 units of the item with probability 0.6, 1 unit with probability 0.3, and 2 units with probability 0.1 (provided enough units are on the shelf), independently from day to day.
+The shelf space in the store has room for at most 5 units of the item.  If at the end of the day there are fewer than 2 units left then the store restocks the shelf so that it has a total of 5 units on it at the start of the next day.
+
+    Let $X_n$ be the number of units on the shelf at the *end* of day $n$, before restocking.
+
+(@) Consider the following simplified model for the spread of a disease in a population of 5 people.
+Each person either has the disease or not.
+In each time period, 2 of the 5 people are selected uniformly at random, and interact.
+If one of the two people selected has the disease and the other does not, then the disease is transmitted to the healthy person with probability 0.1.
+Otherwise, no transmission of the disease occurs.
+
+    Let $X_n$ denote the number of people who have the disease at the end of the $n$th time period (after any disease transmission occurs).

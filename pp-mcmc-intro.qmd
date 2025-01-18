@@ -1,0 +1,16 @@
+# Introduction to Markov Chain Monte Carlo (MCMC) Methods {.unnumbered}
+
+
+(@) Consider the integral
+$$
+\int_0^{1}\int_{1}^{2} \exp\left(-\frac{2}{3}\left(x^2 + y^2 -0.5 xy\right)\right)\, dx\, dy
+$$
+
+a. Describe in detail a Monte Carlo approach to approximating the integral using only Uniform(0, 1) random numbers.
+a. Write a few lines of code to carry out your approximation and report the value.
+Compare to an analytic solution (use an integral calculator like WolframAlpha).
+
+(@) Roll a fair six-sided die 100 times.
+What is the conditional expected value of
+the sum of the rolls given that no two consecutive rolls are the same?
+Describe in detail how you can use an MCMC procedure to approximate this expected value.

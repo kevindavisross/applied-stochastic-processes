@@ -1,0 +1,171 @@
+# Conditional Probability, Independence, and Conditional Independence {.unnumbered}
+
+
+## FPG Test and Diabetes: One test 
+
+```{r}
+prob_disease = 0.1
+
+prob_positive_given_disease = 0.6
+
+prob_positive_given_not_disease = 0.2
+```
+
+
+```{r}
+prob_positive = prob_positive_given_disease * prob_disease +
+  prob_positive_given_not_disease * (1 - prob_disease)
+
+prob_positive
+
+```
+
+```{r}
+prob_disease_given_positive = prob_positive_given_disease * prob_disease / prob_positive
+
+prob_disease_given_positive
+```
+
+
+
+
+```{r}
+N = 10000
+
+status = rep(NA, N)
+test = rep(NA, N)
+
+for (i in 1:N) {
+  status_i = sample(c("disease", "not_disease"), 1,
+                  prob = c(prob_disease, 1 - prob_disease))
+  if (status_i == "disease") {
+    test_i = sample(c("positive", "not_positive"), 1,
+                  prob = c(prob_positive_given_disease, 1 - prob_positive_given_disease))
+  } else {
+    test_i = sample(c("positive", "not_positive"), 1,
+                  prob = c(prob_positive_given_not_disease, 1 - prob_positive_given_not_disease))
+  }
+  status[i] = status_i
+  test[i] = test_i
+}
+
+sim = data.frame(status, test)
+
+sim |> head()
+
+```
+
+
+
+```{r}
+table(sim) |>
+  addmargins()
+```
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(kableExtra)
+
+sim |>
+  group_by(status, test) |>
+  summarize(freq = n()) |>
+  mutate(rel_freq = freq / N) |>
+  adorn_totals() |>
+  kbl() |> kable_styling()
+```
+
+```{r}
+sim |>
+  filter(test == "positive") |>
+  head()
+```
+
+```{r}
+sim |>
+  filter(test == "positive") |>
+  group_by(status) |>
+  summarize(freq = n()) |>
+  mutate(cond_rel_freq = freq / sum(freq)) |>
+  adorn_totals() |>
+  kbl() |> kable_styling()
+```
+
+
+
+
+## FPG Test and Diabetes: Two tests 
+
+
+
+
+```{r}
+N = 10000
+
+status = rep(NA, N)
+test1 = rep(NA, N)
+test2 = rep(NA, N)
+
+for (i in 1:N) {
+  status_i = sample(c("disease", "not_disease"), 1,
+                    prob = c(prob_disease, 1 - prob_disease))
+  if (status_i == "disease") {
+    test_i = sample(c("positive", "not_positive"), 2, replace = TRUE,
+                    prob = c(prob_positive_given_disease, 1 - prob_positive_given_disease))
+  } else {
+    test_i = sample(c("positive", "not_positive"), 2, replace = TRUE,
+                    prob = c(prob_positive_given_not_disease, 1 - prob_positive_given_not_disease))
+  }
+  status[i] = status_i
+  test1[i] = test_i[1]
+  test2[i] = test_i[2]
+}
+
+sim = data.frame(status, test1, test2)
+
+sim |> head()
+
+```
+
+
+
+
+
+```{r}
+table(sim) |>
+  addmargins()
+```
+
+```{r}
+sim |>
+  group_by(status, test1, test2) |>
+  summarize(freq = n()) |>
+  mutate(rel_freq = freq / N) |>
+  adorn_totals() |>
+  kbl() |> kable_styling()
+```
+
+```{r}
+sim |>
+  filter(test1 == "positive" & test2 == "positive") |>
+  head()
+```
+
+```{r}
+sim |>
+  filter(test1 == "positive" & test2 == "positive") |>
+  group_by(status) |>
+  summarize(freq = n()) |>
+  mutate(cond_rel_freq = freq / sum(freq)) |>
+  adorn_totals() |>
+  kbl() |> kable_styling()
+```
+
+
+
+
+
+
+
+
+

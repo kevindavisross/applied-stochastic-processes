@@ -1,0 +1,106 @@
+# Discrete Time Markov Chains: Long Run Behavior {.unnumbered}
+
+
+
+
+
+(@) Rihanna has three umbrellas, some at her office and some at home.
+If she is leaving home in the morning (or leaving work at night) and it is raining, she will take an umbrella if there is one there; otherwise, she gets wet.
+Assume that, independent of the past, it rains on each trip with probability 0.2.
+In the long run, on what proportion of trips does Rihanna get wet?
+Hint: we have previously shown that $X_n$, the number of umbrellas at her current location, is a Markov chain with the following transition matrix.
+
+
+```{r}
+state_names = 0:3
+
+P = rbind(
+  c(0, 0, 0, 1),
+  c(0, 0, 0.8, 0.2),
+  c(0, 0.8, 0.2, 0),
+  c(0.8, 0.2, 0, 0)
+)
+```
+
+
+```{r}
+#| echo: false
+
+library(kableExtra)
+
+row.names(P) = state_names
+
+kbl(P, col.names = state_names) |>
+  column_spec(1, bold = TRUE) |>
+  kable_styling()
+```
+
+
+
+  
+  
+
+(@) Every day for lunch you have either a sandwich (state 1), a burrito (state 2), or pizza (state 3).
+Pizza costs \$5, burrito \$7, and sandwich \$9.
+Suppose your lunch choices from one day to the next follow a MC with transition matrix
+
+
+```{r}
+
+state_names = c("sandwich", "burrito", "pizza")
+
+P = rbind(
+  c(0, 0.5, 0.5),
+  c(0.1, 0.4, 0.5),
+  c(0.2, 0.3, 0.5)
+)
+```
+
+
+```{r}
+#| echo: false
+
+library(kableExtra)
+
+row.names(P) = state_names
+
+kbl(P, col.names = state_names) |>
+  column_spec(1, bold = TRUE) |>
+  kable_styling()
+```
+
+
+a. If your lunches follow this pattern for a year, on what proportion of days do you have a burrito for lunch? Pizza? Sandwich?
+What is your average daily lunch cost?
+a. What is the difference between the questions in part (a) and the kinds of questions you have previously considered for this MC?
+
+(@) For each of the following transition matrices, draw a well labeled state diagram.
+Then identify the transient and recurrent states and the irreducible
+closed sets of the corresponding Markov chains.
+
+a. $$
+\mathbf{P} = 
+\begin{bmatrix}
+& 0 & 1 & 2 & 3 & 4\\
+0 & 0 & 0 & 0 & 0 & 1\\
+1 & 0 & 0.2 & 0 & 0.8 & 0\\
+2 & 0.1 & 0.2 & 0.3 & 0.4 & 0\\
+3 & 0 & 0.6 & 0 & 0.4 & 0\\
+4 & 0.3 & 0 & 0 & 0 & 0.7
+\end{bmatrix}
+$$
+
+
+a. $$
+\mathbf{P} = 
+\begin{bmatrix}
+& 0 & 1 & 2 & 3 & 4 & 5\\
+0 & 2/3 & 0 & 0 & 1/3 & 0 & 0\\
+1 & 0 & 1/2 & 0 & 0 & 1/2 & 0\\
+2 & 0 & 0 & 1/3 & 1/3 & 1/3 & 0\\
+3 & 1/2 & 0 & 0 & 1/2 & 0 & 0\\
+4 & 0 & 1/2 & 0 & 0 & 1/2 & 0\\
+5 & 1/2 & 0 & 0 & 1/2 & 0 & 0
+\end{bmatrix}
+$$
+

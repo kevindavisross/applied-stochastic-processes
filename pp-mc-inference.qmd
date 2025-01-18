@@ -1,0 +1,29 @@
+# Inference for Discrete Time Markov Chains {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+
+[Avery and Henderson (1999)](https://www.jstor.org/stable/pdf/2680818.pdf?refreqid=excelsior%3Aa2d49b79e5644fd897b520c32fc0350d&ab_segments=&origin=&initiator=&acceptTC=1) discusses the use of Markov chains in modeling DNA sequences (in the preproglucacon protein).
+The data set `preproglucacon` in the `markovchain` package contains related data.
+
+
+
+```{r}
+library(markovchain)
+
+data("preproglucacon", package = "markovchain")
+
+x = preproglucacon$preproglucacon
+
+head(x)
+```
+
+
+1. Use the data to estimate the transition matrix.
+1. Find and interpret a 95% confidence interval for $p(A, C)$.
+1. Find the stationary distribution that corresponds to the estimated transition matrix.
+1. Find the observed relative frequency of each state in the data.
+How do the observed relative frequencies compare to the stationary distribution?
+1. Create an appropriate plot to assess if the observed sequence can be reasonably considered an observation from a (first order) Markov chain.
+1. (Optional.) Use the `markovchain` package to test if the observed sequence can be reasonably considered an observation from a (first order) Markov chain
+

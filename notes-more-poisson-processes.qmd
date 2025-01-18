@@ -1,0 +1,33 @@
+# Further Properties of Poisson Processes {.unnumbered}
+
+
+## Compound Poisson Process
+
+```{r}
+n_rep = 10000
+
+t = 60
+
+lambda = 12
+
+mu = 5
+
+sigma = 1.5
+
+N = rep(NA, n_rep)
+X = rep(NA, n_rep)
+
+for (i in 1:n_rep) {
+  N[i] = rpois(1, lambda * t)
+  
+  X[i] = sum(rnorm(N[i], mu, sigma))
+}
+
+hist(X)
+
+mean(X)
+
+sd(X)
+
+```
+

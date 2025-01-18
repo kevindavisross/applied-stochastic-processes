@@ -1,0 +1,11 @@
+# Brownian Motion {.unnumbered}
+
+
+
+
+
+Let $B(t)$ represent the change in the price (US dollars) of a barrel of crude oil $t$ days from now.  Suppose $B(t)$ follows a Brownian motion with $\mu = 0.01$ and $\sigma = 0.15$. 
+
+1. Find the probability that the price has changed by more than 1 dollar after 5 days.
+1. Repeat the previous part but for 10 days.
+1. Given that the price has increased by exactly 1 dollar in the first 7 days, find the conditional probability that it will be at least another dollar higher after an additional 7 days.

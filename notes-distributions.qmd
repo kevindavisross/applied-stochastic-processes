@@ -1,0 +1,18 @@
+# Random Variables: Joint, Conditional, and Marginal Distributions {.unnumbered}
+
+
+{{< include _r_setup.qmd >}}
+
+
+
+```{r}
+outcomes = expand_grid(1:0, 1:0, 1:0, 1:0)
+names(outcomes) = c("X1", "X2", "X3", "X4")
+outcomes
+
+apply()
+```
+
+
+
+

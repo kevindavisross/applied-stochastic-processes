@@ -1,0 +1,80 @@
+# Project {.unnumbered}
+
+
+
+## Part 1
+
+Customers arrive to join a queue for a single ATM according to a Poisson process with rate
+$2$ per minute.
+However, an arriving customer only joins the queue with probability $1/(x+1)$ if there are $x$ customers in the system ahead of them; otherwise, the customer leaves.
+For example, if $x=0$, there is no one at the ATM and an arriving customer stays with probability 1; if $x=1$ then there is one customer at the ATM and an arriving customer stays with probability 1/2, etc.
+When the customers are at the ATM, the times to complete their transactions are independent, identically distributed Exponential random variables with mean 3 minutes.
+(Each customer only makes a single transaction.)
+Let $X(t)$ be the number of customers in the system, including any customer in service at the ATM, at time $t\ge0$, with time measured in minutes.
+Note: customers that do not count the queue are NOT counted as arrivals and NOT counted by $X(t)$.
+
+1. Specify the transition rates of the process $\{X(t)\}$.
+1. Code and run a simulation to simulate a single path of $X(t)$ for a long time, and use the simulation results to approximate the stationary distribution.
+Note: it can be shown that the stationary distribution is the Poisson(6) distribution, and you can use this fact to check your work (but your code for this part should NOT use this fact).
+1. Suppose there are currently no customers at the ATM.
+Code and run a simulation to approximate the distribution of the amount of time (starting now) until the line is 4 customers long (including the customer in service).
+1. Suppose there are currently no customers at the ATM.
+Set up and solve (using software) a system of equations to compute the expected value of the amount of time (starting now) until the line is 4 customers long (including the customer in service).
+1. It can be shown that the stationary distribution of the process $\{X(t)\}$ is the Poisson distribution with parameter 6.
+Using this fact, code and run a simulation to approximate the long run fraction of arriving customers that leave without joining the queue.
+
+
+
+## Part 2
+
+
+When two particular basketball teams play each other in a game, the difference (home $-$ away) in scores as game time (measured in minutes) progresses is modeled (approximately) by a Brownian motion with drift with parameters $\mu$ and $\sigma$.
+Assume the game lasts 48 minutes.
+
+1. Suppose the probability that home team wins is 0.7 and the expected score difference at the end of the game is +6 points.
+Find the corresponding values of $\mu$ and $\sigma$.
+
+1. Given the values of $\mu$ and $\sigma$ from above, write and solve a problem involving conditional probability in this context where you use *specific properties of Brownian motion* to reduce the problem to a Normal distribution calculation.
+(This is basically asking you to do something very similar to what we did in part c of Exercise 25.3 in Handout 25, but you choose the set up and can tweak the problem (e.g. first quarter instead of halftime).)
+Note: if you couldn't solve part 1, just make up some values of $\mu$ and $\sigma$ to use here.
+
+1. Given the values of $\mu$ and $\sigma$ from above, write and solve a problem involving conditional probability in this context where you use *specific properties of Gaussian processes* to reduce the problem to a Normal distribution calculation.
+(This is basically asking you to do something very similar to what we did in part d of Exercise 25.3 in Handout 25, but you choose the set up and can tweak the problem (e.g. first quarter instead of halftime).)
+Note: the problems in this part and the previous part can be similar, but you should solve them in two different ways: one way that only works because it's Brownian motion (the previous part), and a more general method that would work for any Gaussian process (this part). 
+
+1. The values of $\mu$ and $\sigma$ could vary depending on which teams are playing and where.
+Suppose that $\mu$ and $\sigma$ and random variables.
+For example, suppose that $\mu$ has a Normal distribution with mean 0.08 and standard deviation 0.03.
+Assume that given $\mu$ and $\sigma$ for a particular game, the difference in scores follows a Brownian motion with drift with parameters $\mu$ and $\sigma$.
+
+    a. Define assumptions for the distributions of $\mu$ and $\sigma$, and explain your choices.
+    It doesn't really matter what you choose, as long as you provide some justification for your choices.
+    For example, you could do a few calculations similar to what you did in part 1 for a few extreme cases to get a range of values, and then define your distributions with the ranges in mind.
+    You can assume that $\mu$ and $\sigma$ are independent or not, your choice.
+    Note: this is NOT asking you to find and analyze data.
+    Justify your choices based on probability models and assumptions and whatever knowledge you have about basketball (which could be very little and be perfectly fine).
+    
+    a. After you have defined your assumptions, code and run a simulation to approximate for a randomly selected game: (1) the probability that the home team wins, (2) the expected difference in scores at the end of the game, (3) some other features that you think are worth investigating.
+    Note: you do NOT need to simulate Brownian motion paths to do this.
+    Rely on properties of Brownian motion to simplify your simulation code.
+    
+1. (Kind of optional, but I'm hoping you do it.)
+In basketball the score can only change by 1, 2, or 3 points at a time, so a continuous state model like Brownian motion might not be the best model.
+Now we'll try a different model for a game between two particular teams.
+Assume:
+
+    - The home team scores points according to a Poisson process with rate 1.35 scores per minute.
+    - Each home team score is worth 1, 2, or 3 points with respective probabilities 0.30, 0.45, 0.25, independently of everything else.
+    - The away team scores points according to a Poisson process with rate 1.10 scores per minute.
+    - Each away team score is worth 1, 2, or 3 points with respective probabilities 0.20, 0.35, 0.45, independently of everything else.
+    - Home and away processes are independent.
+    - Note: the Poisson processes are only modeling when points are *scored*.
+    In this scenario, we don't care about attempts, just scores.
+    - Just use these assumptions and ignore all game context that would influence how a team would actually play.
+    - (We're ignoring a lot of technical details.
+    For example, we're treating two made free throws as a single 2 point score rather than two 1 point scores at a single time.
+    We're ignoring 4-point plays. Etc.)
+    
+    
+    Code and run a simulation to produce a single sample path of the difference (home $-$ away) in score process for a 48 minute game.
+    Then code and run a simulation to investigate some feature you think would be interesting.

@@ -1,0 +1,52 @@
+# Brownian Motion {.unnumbered}
+
+{{< include _python_setup.qmd >}}
+
+
+{{< include _r_setup.qmd >}}
+
+```{python}
+#| eval: false
+
+from symbulate import *
+
+from matplotlib import pyplot as plt
+```
+
+
+
+```{r}
+
+brownian_path = function(t_max = 1, n_steps = 10000) {
+  x = 2 * rbinom(n_steps, 1, 0.5) - 1
+  s = c(0, cumsum(x))
+  time = seq(0, t_max, by = t_max / n_steps)
+  w = s / sqrt(n_steps)
+  data.frame(time, w)
+}
+
+```
+
+```{r}
+brownian_path() |> 
+  ggplot(aes(x = time,
+             y = w)) +
+  geom_line()
+
+```
+
+
+
+```{r}
+brownian_hitting_time = function(a, n_rep = 10000, n_steps = 10000) {
+  T = rep(NA, n_rep)
+  for (i in 1:n_rep) {
+    t_max = (10 * a) ^ 2
+    w = brownian_path(t_max = t_max)
+    T[i] = w |> filter(w >= a) |> summarize(min(time))
+  }
+}
+```
+
+
+

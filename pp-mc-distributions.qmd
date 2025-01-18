@@ -1,0 +1,34 @@
+# Discrete Time Markov Chains: Joint, Conditional, and Marginal Distributions {.unnumbered}
+
+
+Every day for lunch you have either a sandwich (state 1), a burrito (state 2), or pizza (state 3).
+Suppose your lunch choices from one day to the next follow a MC with transition matrix
+
+$$
+\mathbf{P} = 
+\begin{bmatrix}
+0 & 0.5 & 0.5\\
+0.1 & 0.4 & 0.5\\
+0.2 & 0.3 & 0.5
+\end{bmatrix}
+$$
+
+Suppose today is Monday and consider your upcoming lunches.
+
+
+- Monday is day 0, Tuesday is day 1, etc.
+- You start with pizza on day 0 (Monday).
+- Let $T$ be the first time (day) you have a sandwich.
+- Let $V$ be the number of times (days) you have a burrito this five-day work week.
+- Pizza costs \$5, burrito \$7, and sandwich \$9.
+
+
+1. Compute and interpret in context $\text{P}(T > 4)$.
+1. Find the marginal distribution of $V$, and interpret in context $\text{P}(V = 2)$. 
+1. Compute the expected total cost of your lunch this work week (Monday through Friday).
+Interpret this value as a long run average in context.
+1. Describe in detail how, in principle, you could use physical objects (coins, dice, spinners, cards, boxes, etc) to perform by hand a simulation to approximate $\text{E}(V|T=4)$.
+Note: this is NOT asking you to compute $\text{E}(V|T=4)$ or how you would compute it using matrices/equations.
+Rather, you need to describe in words how you would set up and perform the simulation, and how you would use the simulation results to approximate $\text{E}(V|T=5)$.
+
+

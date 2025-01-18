@@ -1,0 +1,26 @@
+# Metropolis-Hastings Algorithm {.unnumbered}
+
+(@) Suppose that the number of children per household in the U.S. has the following distribution
+
+\begin{align*}
+x & & 0 & & 1 & & 2 & & 3 & & 4 & & 5\\
+\text{P}(X=x) & & 0.15 & & 0.18 & &  0.35& & 0.20 & & 0.08 & &0.04  
+\end{align*}
+
+
+a. Describe in detail how you could implement by hand a Metropolis-Hastings algorithm to simulate from this distribution, using a random walk to neighboring states as the proposal chain.
+a. Write a few lines of code to implement and run your algorithm, and summarize the approximate distribution.
+Does your algorithm seem to work?
+a. Specify the transition matrix for the M-H algorithm in the previous part.
+a. Find the stationary distribution of the M-H chain.
+Is it the target distribution?
+
+
+(@) The standard double exponential distribution has a pdf which satisfies
+$$
+f(x) \propto e^{-|x|}, \qquad -\infty<x<\infty
+$$
+
+a. Describe in detail a Metropolis-Hastings algorithm for simulating from this distribution.
+a. Write a few lines of code to implement the algorithm and run it.
+Does the algorithm seem to produce values from the target distribution?

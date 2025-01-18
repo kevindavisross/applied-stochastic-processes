@@ -1,0 +1,20 @@
+# Preface {.unnumbered}
+
+
+{{< include _r_setup.qmd >}}
+
+{{< include _python_setup.qmd >}}
+
+```{r}
+#| echo: false
+#| include: false
+
+# Without an R chunk first, it's looking for the Jupyter engine, which I don't seem to have
+# 
+1 + 1
+```
+
+Selected examples and assignments from Cal Poly STAT 545.
+
+Some Python code uses the package Symbulate @ross2019.
+

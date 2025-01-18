@@ -1,0 +1,31 @@
+# Stationary Distributions and Long Run Behavior of CTMCs {.unnumbered}
+
+
+
+(@) The weather in a certain city can be in one of 3 states: sunny (1), cloudy (2), or rainy (3).
+Suppose the weather evolves over time according to a continuous time Markov chain with the following transition rate matrix.
+Rates are all per day (24 hours).
+(Diagonals left blank on purpose.)
+
+$$
+\mathbf{Q} = 
+\begin{bmatrix}
+	 & 0.25 & 0\cr
+	 0.8& & 0.4\cr
+	 2.0& 1.5& \cr	
+\end{bmatrix}
+$$
+
+a. In the long run, in what state does the city's weather spend the highest fraction of time?
+Explain your reasoning without doing any calculations.
+a. Set up by hand the system of equations you would solve to find the stationary distribution for the continuous time chain.
+(You don't need to solve the system by hand.)
+a. Use software to compute the stationary distribution.
+a. Roughly, how much time does it take for the CTMC to converge --- close enough for practical purposes --- to its stationary distribution?
+Answer this question by using software to compute $\textbf{P}_t$ for different values of $t$ and comparing to the stationary distribution.
+
+
+(@) A newborn baby spends its time in one of 3 states: eat (1), play (2), or sleep (3).
+Suppose the baby moves from state to state according to a discrete time Markov chain with unique stationary distribution $(0.4071, 0.2566, 0.3363)$.
+Assume that the time the baby  spends in each state has an Exponential distribution, independent of time spent in previous states, with mean: 30 minutes for eating, 1 hour for playing, and 2 hours for sleeping.
+Compute the long run fraction of time the baby spends in each state.

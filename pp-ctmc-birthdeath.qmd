@@ -1,0 +1,24 @@
+# Birth and Death Chains {.unnumbered}
+
+
+
+*The process below is not a birth and death chain, but a problem similar to this one can be found in the Birth and Death Chain handout.*
+
+
+The weather in a certain city can be in one of 3 states: sunny (1), cloudy (2), or rainy (3).
+Suppose the weather evolves over time according to a continuous time Markov chain with the following transition rate matrix.
+Rates are all per day (24 hours).
+(Diagonals left blank on purpose.)
+
+$$
+\mathbf{Q} = 
+\begin{bmatrix}
+	 & 0.25 & 0\cr
+	 0.8& & 0.4\cr
+	 2.0& 1.5& \cr	
+\end{bmatrix}
+$$
+
+Given that it is currently cloudy, compute the expected number of days elapsed from now until it is sunny.
+    
+    

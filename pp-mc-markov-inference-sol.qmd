@@ -1,0 +1,204 @@
+# Inference for Discrete Time Markov Chains {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+
+[Avery and Henderson (1999)](https://www.jstor.org/stable/pdf/2680818.pdf?refreqid=excelsior%3Aa2d49b79e5644fd897b520c32fc0350d&ab_segments=&origin=&initiator=&acceptTC=1) discusses the use of Markov chains in modeling DNA sequences (in the preproglucacon protein).
+The data set `preproglucacon` in the `markovchain` package contains related data.
+
+1. Use the data to estimate the transition matrix.
+1. Find and interpret a 95% confidence interval for $p(A, C)$.
+1. Find the stationary distribution that corresponds to the estimated transition matrix.
+1. Find the observed relative frequency of each state in the data.
+How do the observed relative frequencies compared to the stationary distribution.
+
+
+
+```{r}
+library(markovchain)
+
+data("preproglucacon", package = "markovchain")
+
+x_current = preproglucacon$preproglucacon
+```
+
+
+```{r}
+x = tibble(x_current,
+           x_next = lead(x_current, 1),
+           x_previous = lag(x_current, 1))
+```
+
+
+Bar plot of conditional distributions of next state given current state
+
+```{r}
+x |>
+  group_by(x_current) |>
+  count(x_next, name = "n") |>
+  filter(!is.na(x_next)) |>
+  ggplot(aes(x = x_current,
+             y = n,
+             fill = x_next)) +
+  geom_bar(position = "fill",
+           stat = "identity") +
+  scale_fill_viridis_d() +
+  labs(y = "Conditional probability given current state")
+```
+
+
+Bar plot of conditional distributions of next state given previous state, conditioned on each current state.
+
+```{r}
+x |>
+  group_by(x_current, x_previous) |>
+  count(x_next, name = "n") |>
+  filter(!is.na(x_next) & !is.na(x_previous)) |>
+ggplot(aes(x = x_previous,
+           y = n,
+           fill = x_next)) +
+  geom_bar(position = "fill",
+           stat = "identity") +
+  scale_fill_viridis_d() +
+  labs(y = "Conditional probability given current state") +
+  facet_wrap(~x_current, labeller = label_both)
+```
+
+
+
+
+```{r}
+verifyMarkovProperty(x_current)
+```
+
+```{r}
+assessOrder(x_current)
+```
+
+
+
+## DNA old
+
+```{r}
+data("preproglucacon", package = "markovchain")
+
+x_obs = preproglucacon$preproglucacon
+
+table(x_obs)
+```
+
+```{r}
+dna_counts = createSequenceMatrix(x_obs)
+
+dna_counts
+```
+
+
+```{r}
+dna_fit = markovchainFit(data = x_obs, method = "mle")
+
+dna_fit
+```
+
+```{r}
+x = data.frame(x_current = x_obs,
+               x_next = lead(x_obs, 1),
+               x_previous = lag(x_obs, 1))
+```
+
+
+
+```{r}
+x |>
+  group_by(x_current) |>
+  count(x_next, name = "n") |>
+  filter(!is.na(x_next)) |>
+ggplot(aes(x = x_current,
+           y = n,
+           fill = x_next)) +
+  geom_bar(position = "fill",
+           stat = "identity") +
+  scale_fill_viridis_d() +
+  labs(y = "Conditional probability given current state")
+```
+
+
+```{r}
+x |>
+  group_by(x_current, x_previous) |>
+  count(x_next, name = "n") |>
+  filter(!is.na(x_next) & !is.na(x_previous)) |>
+ggplot(aes(x = x_previous,
+           y = n,
+           fill = x_next)) +
+  geom_bar(position = "fill",
+           stat = "identity") +
+  scale_fill_viridis_d() +
+  labs(y = "Conditional probability given current state") +
+  facet_wrap(~x_current)
+```
+
+
+
+```{r}
+x = x |>
+  unite("y_current", c("x_current", "x_next"), remove = FALSE) |>
+  mutate(y_next = lead(y_current, 1),
+               y_previous = lag(y_next, 1))
+  
+```
+
+
+
+
+```{r}
+x |>
+  group_by(y_current) |>
+  count(y_next, name = "n") |>
+  filter(!str_detect(y_next, "NA")) |>
+ggplot(aes(x = y_current,
+           y = n,
+           fill = y_next)) +
+  geom_bar(position = "fill",
+           stat = "identity") +
+  scale_fill_viridis_d() +
+  labs(y = "Conditional probability given current state")
+```
+
+
+```{r}
+x |>
+  group_by(y_current, y_previous) |>
+  count(y_next, name = "n") |>
+  filter(!str_detect(y_next, "NA") & !str_detect(y_previous, "NA")) |>
+ggplot(aes(x = y_previous,
+           y = n,
+           fill = y_next)) +
+  geom_bar(position = "fill",
+           stat = "identity") +
+  scale_fill_viridis_d() +
+  labs(y = "Conditional probability given current state") +
+  facet_wrap(~y_current)
+```
+
+
+## weather
+
+```{r}
+x |>
+  group_by(x_current) |>
+  count(x_next, name = "n")
+```
+
+
+## Mobility
+
+```{r}
+data("blanden")
+
+mobilityMC <- as(blanden, "markovchain")
+
+mobilityMC
+```
+
+

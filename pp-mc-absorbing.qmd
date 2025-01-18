@@ -1,0 +1,23 @@
+# Discrete Time Markov Chains: Absorbing States and First Step Analysis {.unnumbered}
+
+
+
+
+
+
+(@) Consider the following simplified model for the spread of a disease in a population of 5 people.
+Each person either has the disease or not.
+In each time period, 2 of the 5 people are selected uniformly at random, and interact.
+If one of the two people selected has the disease and the other does not, then the disease is transmitted to the healthy person with probability 0.1.
+Otherwise, no transmission of the disease occurs.
+
+    If one person initially has the disease, what is the expected number of time periods until everyone has the disease?
+    
+    
+    
+(@) At a local two year college, 60% of freshmen become sophomores, 25% remain freshmen (because they don't have enough credits), and 15% drop out (and don't re-enroll).
+70% of sophomores graduate and transfer to a four year college, 20% remain sophomores (because they don't have enough credits), and 10% drop out (and don't re-enroll).
+Answer the following questions by defining an appropriate Markov chain.
+
+a. What proportion of new students eventually graduate?
+a. On average how many years does a student stay enrolled at the college?

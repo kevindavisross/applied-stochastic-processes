@@ -1,0 +1,39 @@
+# Continuous Time Markov Chains: Transition Probabilities and Kolmogorov Equations {.unnumbered}
+
+(@) The weather in a certain city can be in one of 3 states: sunny (1), cloudy (2), or rainy (3).
+Suppose the weather evolves over time according to a continuous time Markov chain with the following transition rate matrix.
+Rates are all per day (24 hours).
+(Diagonals left blank on purpose.)
+
+$$
+\mathbf{Q} = 
+\begin{bmatrix}
+	 & 0.25 & 0\cr
+	 0.8& & 0.4\cr
+	 2.0& 1.5& \cr	
+\end{bmatrix}
+$$
+
+a. Given that it is cloudy now, find the probability that it is rainy next.
+a. Given that it is rainy now, *approximate* the  probability that it is sunny 30 minutes from now.
+Justify your approximation without using software or solving any equations.
+a. Given that it is sunny now, use software to compute the  probability for each type of weather at this time in 2 days.
+a. Given that it is cloudy now, use software to compute the  probability for each type of weather at this time in 2 days.
+
+
+(@) (Yule process.)
+Every individual in a population gives birth to a new individual independently at Exponential rate $\lambda$.
+Let $X_t$ denote the number of individuals in the population at time $t$, assuming no deaths.
+Assume that $X_0=1$; we are interested in the distribution of $X_t$.
+That is, we want to find $p_t(1, j) = \text{P}(X_t = j | X_0 =1)$ for $j = 1, 2, \ldots$.
+
+a. Write out the Kolmogorov forward equations for $p_t'(1, j)$.
+a. Check that 
+$$
+(1-e^{-\lambda t})^{j - 1}e^{-\lambda t}, \quad j = 1, 2, 3, \ldots
+$$
+is the solution to the Kolmogorov forward equations
+a. Identify by name the distribution of $X_t$ (given $X_0 = 1$).
+Be sure to identify relevant parameters.
+a. Provide an intuitive explanation for the previous result.
+a. As a concrete example, make a table of the distribution of $X_t$ when $\lambda = 0.1$ and $t = 5$.

@@ -1,0 +1,253 @@
+# Hidden Markov Models {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+## Simulating HMM
+
+```{r}
+hidden_states = c("hot", "cold")
+
+N = length(hidden_states)
+
+# transition matrix of hidden states
+A = rbind(
+  c(0.7, 0.3),
+  c(0.4, 0.6)
+)
+
+# initial distribution of hidden state
+pi_0 = c(0.571, 0.429)
+
+observed_states = c("small", "medium", "large")
+
+M = length(observed_states)
+
+# emission matrix: hidden -> observed
+B = rbind(
+  c(0.1, 0.4, 0.5),
+  c(0.7, 0.2, 0.1)
+)
+
+```
+
+```{r}
+
+T = 100
+
+# Note: +1's below because first entries represent initial time 0 
+X = rep(NA, T + 1)
+O = rep(NA, T + 1)
+
+# initial state
+X[1] = sample(1:N, 1, prob = pi_0)
+O[1] = sample(1:M, 1, prob = B[X[1], ])
+
+for (t in 1:T) {
+  # simulate current hidden state, given previous hidden state 
+  X[t + 1] = sample(1:N, 1, prob = A[X[t], ])
+  
+  # simulate current observed state, given current hidden state
+  O[t + 1] = sample(1:M, 1, prob = B[X[t + 1], ])
+
+}
+
+data.frame(t = 0:T, X_t = hidden_states[X], O_t = observed_states[O]) |>
+  head(10) |> kbl() |> kable_styling()
+```
+
+
+```{r}
+#| layout-ncol: 1
+
+
+plot(0:T, X, type = "o", xlab = "t", ylab = "X_t", col = "blue",
+     main = "Hidden states (1 = hot, 2 = cold)")
+
+plot(0:T, O, type = "o", xlab = "t", ylab = "O_t", col = "orange",
+     main = "Observed states (1 = small, 2 = medium, 3 = large)")
+
+```
+
+## Stationary/Marginal at single time
+
+```{r}
+# hidden states
+pi_sd = compute_stationary_distribution(A)
+
+pi_sd
+```
+
+
+```{r}
+# observed states
+pi_sd %*% B
+```
+
+
+## HMM package
+
+```{r}
+library(HMM)
+
+# Initialise HMM
+hmm = initHMM(States = hidden_states,
+              Symbols = observed_states,
+              transProbs = A,
+              emissionProbs = B,
+              startProbs = pi_sd)
+
+hmm
+```
+
+## HMM package simulation
+
+```{r}
+simHMM(hmm, 10)
+```
+
+## Likelihood of observations
+
+```{r}
+# Sequence of observations
+observations = c("small", "medium")
+
+log_forward_probability = forward(hmm, observations)
+
+forward_probability = exp(log_forward_probability)
+
+forward_probability
+```
+
+```{r}
+colSums(forward_probability)
+```
+
+
+
+```{r}
+# Sequence of observations
+observations = simHMM(hmm, 10)$observation
+observations
+```
+
+
+```{r}
+log_forward_probability = forward(hmm, observations)
+
+forward_probability = exp(log_forward_probability)
+
+forward_probability
+```
+
+```{r}
+colSums(forward_probability)
+```
+
+
+## Decoding
+
+
+```{r}
+observations = c("small", "medium")
+
+viterbi(hmm, observations)
+```
+
+```{r}
+# Sequence of observation
+observations = simHMM(hmm, 100)$observation
+
+observations
+```
+
+
+```{r}
+viterbi(hmm, observations)
+```
+
+
+
+## Estimation
+
+
+```{r}
+# Sequence of observation
+observation = simHMM(hmm, 10000)$observation
+
+table(observation) / 10000
+```
+
+
+```{r}
+# Baum-Welch
+baumWelch(hmm, observation, maxIterations = 10)
+```
+
+
+## All or nothing
+
+
+```{r}
+library(HMM)
+
+hidden_states = c("learning", "mastery")
+
+observed_states = c("incorrect", "correct")
+
+A = rbind(
+  c(0.8, 0.2),
+  c(0.001, 0.999)
+)
+
+B = rbind(
+  c(0.5, 0.5),
+  c(0.1, 0.9)
+)
+
+pi_0 = c(0.999, 0.001)
+
+# Initialise HMM
+hmm = initHMM(States = hidden_states,
+              Symbols = observed_states,
+              transProbs = A,
+              emissionProbs = B,
+              startProbs = pi_0)
+
+hmm
+```
+
+
+```{r}
+simHMM(hmm, 10)
+```
+
+
+
+
+```{r}
+# Sequence of observation
+observations = simHMM(hmm, 100)$observation
+
+observations
+```
+
+
+```{r}
+viterbi(hmm, observations)
+```
+
+
+
+
+```{r}
+# Sequence of observation
+observation = simHMM(hmm, 10000)$observation
+table(observation) / 10000
+```
+
+
+```{r}
+# Baum-Welch
+baumWelch(hmm, observation, maxIterations = 10)
+```
+

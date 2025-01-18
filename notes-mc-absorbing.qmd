@@ -1,0 +1,502 @@
+# Absorbing States and First Step Analysis {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+## Function to compute mean time to absorption for absorbing chain
+
+This function basically just computes $\boldsymbol{\mu} = (\textbf{I}-\textbf{Q})^{-1}\textbf{1}$ as `solve(I - Q, ones)`, but there's some rearranging required to put the transition matrix in canonical form.
+
+```{r}
+#| eval: false
+
+
+mean_time_to_absorption <- function(transition_matrix, state_names = NULL) {
+
+  absorbing_states = which(diag(transition_matrix) == 1)
+  
+  if (length(absorbing_states) == 0) stop("There are no absorbing states.")
+  
+  n_states = nrow(transition_matrix)
+  
+  transient_states = setdiff(1:n_states, absorbing_states)
+  
+  Q = transition_matrix[transient_states, transient_states]
+  
+  mtta = solve(diag(nrow(Q)) - Q, rep(1, nrow(Q)))
+  
+  if (is.null(state_names)) state_names = 1:n_states
+  
+  data.frame(start_state = state_names[transient_states],
+             mean_time_to_absorption = mtta)
+}
+```
+
+
+## Function to compute pmf of time to absorption given the initial state.
+
+
+
+```{r}
+#| eval: false
+
+
+pmf_of_time_to_absorption <- function(transition_matrix, state_names = NULL, start_state) {
+  
+  absorbing_states = which(diag(transition_matrix) == 1)
+  
+  if (length(absorbing_states) == 0) stop("There are no absorbing states.")
+  
+  n_states = nrow(transition_matrix)
+  
+  transient_states = setdiff(1:n_states, absorbing_states)
+  
+  if (is.null(state_names)) state_names = 1:n_states
+  
+  if (which(state_names == start_state) %in% absorbing_states) stop("Initial state is an absorbing state; absorption at time 0.")
+  
+  n = 1
+  
+  TTA_cdf = sum(transition_matrix[which(state_names == start_state), absorbing_states])
+  
+  while (max(TTA_cdf) < 0.999999) {
+    
+    n = n + 1
+    
+    TTA_cdf = c(TTA_cdf, sum((transition_matrix %^% n)[which(state_names == start_state), absorbing_states]))
+  }
+  
+  TTA_pmf = TTA_cdf - c(0, TTA_cdf[-length(TTA_cdf)])
+  
+  data.frame(n = 1:length(TTA_pmf),
+             prob_absorb_at_time_n = TTA_pmf)
+}
+```
+
+
+## Function to compute probabilities of absorption in each absorbing state
+
+
+This function basically just computes $\boldsymbol{\Pi} = (\textbf{I}-\textbf{Q})^{-1}\textbf{R}$ as `solve(I - Q, R)`, but there's some rearranging required to put the transition matrix in canonical form.
+
+```{r}
+#| eval: false
+
+absorption_probability <- function(transition_matrix, state_names = NULL) {
+  
+  absorbing_states = which(diag(transition_matrix) == 1)
+  
+  if (length(absorbing_states) == 0) stop("There are no absorbing states.")
+  
+  n_states = nrow(transition_matrix)
+    
+  transient_states = setdiff(1:n_states, absorbing_states)
+  
+  Q = transition_matrix[transient_states, transient_states]
+  
+  R = transition_matrix[transient_states, absorbing_states]
+  
+  absorption_probability = solve(diag(nrow(Q)) - Q, R)
+  
+  if (is.null(state_names)) state_names = 1:n_states
+  
+  colnames(absorption_probability) = paste("prob_absorb_in_state_",
+                                           state_names[absorbing_states], sep = "")
+  
+  data.frame(start_state = state_names[transient_states],
+             absorption_probability)
+}
+```
+
+
+## Ehrenfest urn chain - time to absorption
+
+
+
+
+```{r}
+
+M = 5
+
+state_names = 0:M
+
+P = rbind(
+  c(5, 0, 0, 0, 0, 0),
+  c(1, 0, 4, 0, 0, 0),
+  c(0, 2, 0, 3, 0, 0),
+  c(0, 0, 3, 0, 2, 0),
+  c(0, 0, 0, 4, 0, 1),
+  c(0, 0, 0, 0, 0, 5)
+) / 5
+
+pi0 = c(0, 0, 0, 1, 0, 0) # start in state 3
+```
+
+```{r}
+plot_state_diagram(P, state_names)
+```
+
+### Simulation-based approximation of time to absorption $T$ given $X_0=3$.
+
+*The `simulate_DTMC_paths` function reshapes the results from wide to long format for easier plotting.*
+*But it's probably easier to leave in wide format - one row for each path - for the purposes of computing path random variables like time to absorption $T$; you could simulate many paths at once and then add a column for $T$.*
+*I left the `simulate_DTMC_paths` function as is, which is why I'm running a loop below to simulate a single sample path, compute $T$ for the path, and then repeat for many paths.*
+
+*Also, rather than running a while loop to stop at the first time of absorption, I'm just running a large number of steps (200) for each path and then finding what time absorption occurred.*
+
+```{r}
+absorbing_states = which(diag(P) == 1)
+  
+n_rep = 10000
+time_to_absorption = rep(NA, n_rep)
+
+for (i in 1:n_rep) {
+  x = simulate_single_DTMC_path(pi0, P, last_time = 200)
+  time_to_absorption[i] = min(which(x %in% absorbing_states))
+}
+
+hist(time_to_absorption)
+
+summary(time_to_absorption)
+
+mean(time_to_absorption)
+
+sd(time_to_absorption)
+
+```
+
+
+### Mean time to absorption given each initial state
+
+
+
+```{r}
+Q = P[2:5, 2:5]
+
+Q
+```
+
+
+```{r}
+solve(diag(4) - Q, rep(1, 4))
+```
+
+
+Using the function
+
+```{r}
+mtta = mean_time_to_absorption(P, state_names)
+
+mtta |> kbl() |> kable_styling()
+```
+
+Molecules distributed at random (assuming it's possible they could start in an absorbing state).
+
+```{r}
+sum(dbinom(0:M, M, 0.5) * c(0, mtta[, 2], 0))
+```
+
+
+### Computation of distribution of time to absorption $T$ given $X_0=3$.
+
+
+```{r}
+T_pmf = pmf_of_time_to_absorption(P, start_state = 3)
+
+T_pmf |> head(10) |> kbl() |> kable_styling()
+```
+
+
+```{r}
+ggplot(T_pmf |>
+         filter(prob_absorb_at_time_n > 0),
+       aes(x = n,
+           y = prob_absorb_at_time_n)) +
+  geom_line(linewidth = 1)
+
+```
+
+```{r}
+sum(T_pmf[, 1] * T_pmf[, 2])
+```
+
+
+## Rick rolls
+
+States: 0 -> 1 -> 12 -> 123
+
+### Mean time to absorption
+
+```{r}
+
+state_names = c("0", "1", "12", "123")
+
+P = rbind(
+  c(5, 1, 0, 0),
+  c(4, 1, 1, 0),
+  c(4, 1, 0, 1),
+  c(0, 0, 0, 6)
+  ) / 6
+
+mean_time_to_absorption(P, state_names) |>
+  kbl() |> kable_styling()
+
+```
+
+
+### Distribution of time to absorption
+
+```{r}
+T_pmf = pmf_of_time_to_absorption(P, state_names, start_state = "0")
+
+T_pmf |> head(10) |> kbl() |> kable_styling()
+```
+
+
+```{r}
+ggplot(T_pmf |>
+         filter(prob_absorb_at_time_n > 0),
+       aes(x = n,
+           y = prob_absorb_at_time_n)) +
+  geom_line(linewidth = 1)
+
+```
+
+```{r}
+sum(T_pmf[, 1] * T_pmf[, 2])
+```
+
+
+
+### Simulation
+
+```{r}
+n_rep = 10000
+
+n_rolls = 3000 # fixed number of rolls instead of while loop
+
+T123 = rep(NA, n_rep)
+
+for (i in 1:n_rep){
+  rolls = sample(1:6, n_rolls, replace = TRUE)
+  rolls1 = rolls[-c(n_rolls, n_rolls - 1)]
+  rolls2 = rolls[-c(1, n_rolls)]
+  rolls3 = rolls[-c(1, 2)]
+  T123[i] = min(which((rolls1 == 1) &
+                        (rolls2 == 2) &
+                        (rolls3 == 3))) + 2
+}
+
+mean(T123)
+
+hist(T123)
+```
+
+
+## Morty rolls
+
+States: 0 -> 6 -> 66 -> 666
+
+```{r}
+
+state_names = c("0", "6", "66", "666")
+
+P = rbind(
+  c(5, 1, 0, 0),
+  c(5, 0, 1, 0),
+  c(5, 0, 0, 1),
+  c(0, 0, 0, 6)
+  ) / 6
+
+mean_time_to_absorption(P, state_names) |>
+  kbl() |> kable_styling()
+
+```
+
+
+```{r}
+T_pmf = pmf_of_time_to_absorption(P, state_names, start_state = "0")
+
+T_pmf |> head(10) |> kbl() |> kable_styling()
+```
+
+
+```{r}
+ggplot(T_pmf |>
+         filter(prob_absorb_at_time_n > 0),
+       aes(x = n,
+           y = prob_absorb_at_time_n)) +
+  geom_line(linewidth = 1)
+
+```
+
+```{r}
+sum(T_pmf[, 1] * T_pmf[, 2])
+```
+
+
+
+Simulation
+
+```{r}
+n_rep = 10000
+
+n_rolls = 3000 # fixed number of rolls instead of while loop
+
+T666 = rep(NA, n_rep)
+
+for (i in 1:n_rep){
+  rolls = sample(1:6, n_rolls, replace = TRUE)
+  rolls1 = rolls[-c(n_rolls, n_rolls - 1)]
+  rolls2 = rolls[-c(1, n_rolls)]
+  rolls3 = rolls[-c(1, 2)]
+  T666[i] = min(which((rolls1 == 6) &
+                        (rolls2 == 6) &
+                        (rolls3 == 6))) + 2
+}
+
+mean(T666)
+
+hist(T666)
+```
+
+
+
+## Cube
+
+
+
+```{r}
+Q = rbind(
+  c(1, 3, 0),
+  c(1, 1, 2),
+  c(0, 2, 1)
+  )/4
+
+solve(diag(3) - Q, rep(1, 3))
+
+```
+
+## Ehrenfest urn chain - absorbing state
+
+
+```{r}
+
+M = 5
+
+state_names = 0:M
+
+P = rbind(
+  c(5, 0, 0, 0, 0, 0),
+  c(1, 0, 4, 0, 0, 0),
+  c(0, 2, 0, 3, 0, 0),
+  c(0, 0, 3, 0, 2, 0),
+  c(0, 0, 0, 4, 0, 1),
+  c(0, 0, 0, 0, 0, 5)
+) / 5
+
+```
+
+```{r}
+plot_transition_matrix(P, state_names, n_step = 10)
+```
+
+```{r}
+plot_transition_matrix(P, state_names, n_step = 50)
+```
+
+After many steps, the chain is probably absorbed
+
+```{r}
+plot_transition_matrix(P, state_names, n_step = 200)
+```
+
+
+Computing probability of absorption in each state using function
+
+```{r}
+absorption_probability(P, state_names) |>
+  kbl() |> kable_styling()
+```
+
+
+```{r}
+
+Q = P[2:5, 2:5]
+Q
+
+R = P[2:5, c(1, 6)]
+R
+
+Pi = solve(diag(4) - Q, R)
+Pi
+
+```
+
+
+
+
+
+## Rolling until 456 or 666
+
+```{r}
+state_names = c("0", "4", "45", "456", "6", "66", "666")
+
+P = rbind(
+  c(4, 1, 0, 0, 1, 0, 0),
+  c(3, 1, 1, 0, 1, 0, 0),
+  c(4, 1, 0, 1, 0, 0, 0),
+  c(0, 0, 0, 6, 0, 0, 0),
+  c(4, 1, 0, 0, 0, 1, 0),
+  c(4, 1, 0, 0, 0, 0, 1),
+  c(0, 0, 0, 0, 0, 0, 6)
+) / 6
+
+
+absorption_probability(P, state_names)
+```
+
+
+```{r}
+mean_time_to_absorption(P, state_names)
+```
+
+
+
+
+
+### Simulation
+
+```{r}
+n_rep = 10000
+
+n_rolls = 3000 # fixed number of rolls instead of while loop
+
+T_abs = rep(NA, n_rep)
+abs_state = rep(NA, n_rep)
+
+for (i in 1:n_rep){
+  rolls = sample(1:6, n_rolls, replace = TRUE)
+  rolls1 = rolls[-c(n_rolls, n_rolls - 1)]
+  rolls2 = rolls[-c(1, n_rolls)]
+  rolls3 = rolls[-c(1, 2)]
+  T456 = min(which((rolls1 == 4) &
+                        (rolls2 == 5) &
+                        (rolls3 == 6))) + 2
+  T666 = min(which((rolls1 == 6) &
+                        (rolls2 == 6) &
+                        (rolls3 == 6))) + 2
+  T_abs[i] = min(c(T456, T666))
+  abs_state[i] = which.min(c(T456, T666))
+
+}
+
+hist(T_abs)
+
+mean(T_abs)
+
+table(abs_state) / n_rep
+
+```
+
+
+

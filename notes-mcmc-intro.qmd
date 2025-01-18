@@ -1,0 +1,309 @@
+# Introduction to Markov Chain Monte Carlo (MCMC) Methods {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+## Monte Carlo Integration
+
+The true value of $\int_{-1}^1 e^{-x^2/2}dx$ is `r sqrt(2 * pi) * (pnorm(1) - pnorm(-1))`
+
+
+1000 simulated reps
+
+
+```{r}
+N = 1000
+
+# simulate values uniformly in the box
+u1 = runif(N, -1, 1)
+u2 = runif(N, 0, 1)
+
+# find the proportion of values that lie under the curve
+# and multiple by the area of the box
+I = 2 * sum( u2 < exp(-u1 ^ 2 / 2)) / N
+I
+
+cols = rep("orange", N)
+cols[which(u2 < exp(-u1 ^ 2 / 2))] = "skyblue"
+plot(u1 ,u2 , col = cols, xaxs='i', yaxs='i')
+x = seq(-1, 1, 0.001)
+lines(x, sqrt(2 * pi) * dnorm(x), lwd = 2)
+```
+
+100000 simulated reps
+
+```{r}
+N = 100000
+
+# simulate values uniformly in the box
+u1 = runif(N, -1, 1)
+u2 = runif(N, 0, 1)
+
+# find the proportion of values that lie under the curve
+# and multiple by the area of the box
+I = 2 * sum( u2 < exp(-u1 ^ 2 / 2)) / N
+I
+
+cols = rep("orange", N)
+cols[which(u2 < exp(-u1 ^ 2 / 2))] = "skyblue"
+plot(u1 ,u2 , col = cols, xaxs='i', yaxs='i')
+x = seq(-1, 1, 0.001)
+lines(x, sqrt(2 * pi) * dnorm(x), lwd = 2)
+```
+
+## Conditional distribution of free throw percentage
+
+```{r}
+n = 100
+
+n_rep = 100000
+
+# Simulate values of X from the marginal distribution
+x_sim = rnorm(n_rep, 0.75, 0.05)
+
+# For each simulated value of x, simulate a value of y from Binomial(n, x)
+y_sim = rbinom(n_rep, n, x_sim)
+
+sim = data.frame(x_sim, y_sim)
+
+# Display the (x, y) results of a few repetitions
+sim |> head(10) |> kbl() |> kable_styling()
+```
+
+Approximate joint distribution
+
+```{r}
+# Plot the simulated (x, y) pairs
+x_y_plot <- sim |>
+  ggplot(aes(x = x_sim,
+             y = y_sim)) +
+  geom_jitter(width = 0.02, height = 0.2, shape = 21, alpha = 0.2) +
+  labs(x = "x",
+       y = "y") +
+  theme_bw()
+
+x_y_plot
+```
+
+Condition on $Y=60$.
+
+```{r}
+# Observed data
+y_obs = 60
+
+# Only keep simulated (x, y) pairs with y = 60
+sim |>
+  filter(y_sim == y_obs) |>
+  head(10) |> kbl() |> kable_styling()
+```
+
+Approximate joint distribution with condition highlighted
+
+```{r}
+# Plot the simulated (x, y) pairs from before, with y = 60 highlighted
+x_y_plot +
+  annotate("rect", xmin = -Inf, xmax = Inf,
+           ymin = y_obs - 0.4, ymax = y_obs + 0.4, alpha = 0.5,
+           color = "seagreen",
+           fill = "seagreen")
+```
+
+Approximate conditional distribution
+
+```{r}
+# Plot the simulated conditional distribution of X given y = 60
+
+sim |>
+  filter(y_sim == y_obs)  |>
+  ggplot(aes(x = x_sim)) +
+  geom_histogram(col = "seagreen", fill = "seagreen")
+```
+
+Started with 100,000 pairs, but conditional distribution is only based on roughly 500.
+
+```{r}
+sim |>
+  filter(y_sim == y_obs)  |>
+  count()
+```
+
+## Sleep chain
+
+```{r}
+
+state_names = c(5, 6, 7)
+
+P = rbind(
+  c(0.2, 0.4, 0.4),
+  c(0.3, 0.5, 0.2),
+  c(0.6, 0.4, 0)
+)
+```
+
+
+Simulated long run mean, sd, and distribution
+
+```{r}
+x_index = simulate_single_DTMC_path(c(1, 0, 0), P, last_time = 1000)
+
+x = state_names[x_index]
+
+table(x) / 1001
+```
+
+
+```{r}
+mean(x)
+
+sd(x)
+```
+
+
+```{r}
+plot_sample_path_proportions(c(1, 0, 0), P, last_time = 1000, state_names = c(5, 6, 7))
+```
+
+Stationary distribution
+
+```{r}
+pi_s = compute_stationary_distribution(P)
+pi_s
+```
+
+```{r}
+sum(state_names * pi_s)
+```
+
+
+```{r}
+sqrt(sum(state_names ^ 2 * pi_s) - (sum(state_names * pi_s)) ^ 2)
+```
+
+
+
+
+
+
+## Coin
+
+Tails = 0; Heads = 1
+
+3 flips
+
+```{r}
+# number of steps
+N = 100000
+
+# number of flips
+n = 3
+
+# initialize
+Xn = matrix(rep(NA, N * n), nrow = N)
+
+# start with all tails
+Xn[1, ] = rep(0, n)
+
+for (m in 2:N){
+  # current state; all but one flip will stay the same
+  x = Xn[m-1, ]
+  
+  # index of which flip to propose to switch
+  i = sample(1:n, 1) 
+  
+  # if proposed switch results in good sequence, accept
+  # otherwise, reject and stay in current state
+  # annoying code for endpoints
+  if (x[i] == 1){
+    x[i] = 0
+  }else{ #if x[i]==0
+    if((i == 1 && x[i+1] == 0) ||
+       (i == n && x[i-1] == 0) ||
+       (i>1 && i<n && x[i-1] == 0 && x[i+1] == 0)){
+      x[i] = 1
+    } else {
+      x[i] = 0
+    }
+  }
+  Xn[m, ] = x
+}
+
+# find number of heads
+Y = rowSums(Xn)
+
+
+plot(table(Y) / N, xlab = "number of H",
+     ylab = "relative frequency",
+     main = paste(N, "good sequences"))
+
+mean(Y)
+
+```
+
+100 flips - same code, just changing 3 to 100
+```{r}
+# number of steps
+N = 100000
+
+# number of flips
+n = 100
+
+# initialize
+Xn = matrix(rep(NA, N * n), nrow = N)
+
+# start with all tails
+Xn[1, ] = rep(0, n)
+
+for (m in 2:N){
+  # current state; all but one flip will stay the same
+  x = Xn[m-1, ]
+  
+  # index of which flip to propose to switch
+  i = sample(1:n, 1) 
+  
+  # if proposed switch results in good sequence, accept
+  # otherwise, reject and stay in current state
+  # annoying code for endpoints
+  if (x[i] == 1){
+    x[i] = 0
+  }else{ #if x[i]==0
+    if((i == 1 && x[i+1] == 0) ||
+       (i == n && x[i-1] == 0) ||
+       (i>1 && i<n && x[i-1] == 0 && x[i+1] == 0)){
+      x[i] = 1
+    } else {
+      x[i] = 0
+    }
+  }
+  Xn[m, ] = x
+}
+
+# find number of heads
+Y = rowSums(Xn)
+
+
+plot(table(Y) / N, xlab = "number of H",
+     ylab = "relative frequency",
+     main = paste(N, "good sequences"))
+
+mean(Y)
+
+```
+
+
+3 flips; transition matrix of the chain
+
+```{r}
+P = rbind(
+  c(0, 1, 1, 1, 0),
+  c(1, 1, 0, 0, 1),
+  c(1, 0, 2, 0, 0),
+  c(1, 0, 0, 1, 1),
+  c(0, 1, 0, 1, 1)
+) / 3
+```
+
+Stationary distribution is uniform over the 5 good states
+
+```{r}
+compute_stationary_distribution(P)
+```
+

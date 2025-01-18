@@ -1,0 +1,36 @@
+# Further Properties of Poisson Processes {.unnumbered}
+
+*You should solve these problems with as few calculations as possible, relying on properties of Poisson processes as much as possible.*
+
+
+(@) Shocks occur to a system according to a Poisson process with rate $\lambda=3$ per year.
+Suppose that the system survives each shock with probability $p=0.9$, independent of other shocks.
+Let $N_t$ denote the number of shocks have occurred by time $t$ and let $T$ denote the time at which the system fails.
+
+
+
+a. Find an expression for and interpret $\text{P}(T > t | N_t = k)$, where $k$ is a nonnegative integer.
+a. Compute and interpret $\text{P}(T>t)$.
+a. Compute and interpret $\text{E}(T)$.
+a. Interpret in words what the random variable $N_T$ represents (the subscript is big $T$ not little $t$), and find the distribution of this random variable.
+You should do this without any calculations.
+
+
+(@) Vehicles arrive at a particular intersection according to a Poisson process, with rate 2 per minute for cars, 1 per minute for trucks, and 0.5 per minute for motorcycles.
+Assume arrivals of the different vehicle types are independent.
+Let $T$ be the time elapsed between now and the arrival of the next vehicle, and let $I$ represent the type (1=car, 2=truck, 3=motorcycle) of the next vehicle to arrive.  
+
+a. Identify the distribution of $T$, find $\text{E}(T)$, and compute the probability that a vehicle arrives within the next 30 seconds.
+a. Find the distribution of $I$; that is, for each of the three vehicle types, find the probability that the next vehicle to arrive is of that type.
+a. Given that the next vehicle to arrive is a motorcycle, find the conditional expected time until the next vehicle arrives, and the conditional probability that a vehicle arrives within the next 30 seconds.
+a. Given that the next vehicle arrives within 30 seconds, compute the conditional probability that it is a motorcycle.
+a. Explain in full detail how you could in principle simulate the arrival times of many vehicles and their types using only (1) a spinner and (2) an Exponential(1) random number generator.
+
+
+(@) In the summer, tornadoes hit a certain region according to a Poisson process with $\lambda = 2$ per month.
+The number of insurance claims filed after any tornado has a Poisson distribution with mean 30.
+The number of tornadoes is independent of the number of insurance claims. Let $X$ be the total number of claims filed in three summer months.
+
+a. Compute $\text{E}(X)$.
+a. Compute $\text{SD}(X)$.
+a. Use simulation to approximate $\text{P}(X > 300)$.

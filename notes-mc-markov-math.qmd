@@ -1,0 +1,61 @@
+# Miscellaneous Markov Math {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+
+
+
+## Mouse and cat
+
+See https://fivethirtyeight.com/features/how-many-pennies-should-you-pinch/ and  https://www.jtash.com/riddler-delirious-ducks
+
+
+
+```{r}
+state_names = c("start", "middle across", "outer edge across",
+                "diagonal not middle", "diagonal middle", "corners",
+                "absorbing")
+P = rbind(
+  c(0, 1/4, 0, 0, 1/2, 0, 1/4),
+  c(0, 0, 2/9, 4/9, 0, 2/9, 1/9),
+  c(0, 1/4, 0, 0, 1/2, 0, 1/4),
+  c(0, 1/4, 0, 0, 1/2, 0, 1/4),
+  c(0, 0, 2/9, 4/9, 0, 1/9, 2/9),
+  c(0, 1/2, 0, 0, 1/2, 0, 0),
+  c(0, 0, 0, 0, 0, 0, 1)
+)
+
+```
+
+
+
+
+```{r}
+mtta = mean_time_to_absorption(P, state_names)
+
+mtta |> kbl() |> kable_styling()
+```
+
+
+```{r}
+T_pmf = pmf_of_time_to_absorption(P, state_names, start_state = "start")
+
+T_pmf |> head(10) |> kbl() |> kable_styling()
+```
+
+
+```{r}
+ggplot(T_pmf |>
+         filter(prob_absorb_at_time_n > 0),
+       aes(x = n,
+           y = prob_absorb_at_time_n)) +
+  geom_line(linewidth = 1)
+
+```
+
+```{r}
+sum(T_pmf[, 1] * T_pmf[, 2])
+```
+
+
+

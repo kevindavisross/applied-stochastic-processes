@@ -1,0 +1,40 @@
+---
+title: "Random-Walk"
+format: html
+---
+
+
+{{< include _r_setup.qmd >}}
+
+{{< include _python_setup.qmd >}}
+
+```{python}
+#| eval: false
+
+from symbulate import *
+
+from matplotlib import pyplot as plt
+```
+
+
+```{python}
+P = BoxModel([-1, 1], size = inf, replace = True)
+X = RandomProcess(P, index_set = Naturals())
+Z = RV(P)
+
+X[0] = 0
+for t in range(1000):
+    X[t+1] = X[t] + Z[t]
+```
+
+
+
+
+```{python}
+X[2].sim(10000).plot()
+plt.show()
+```
+
+
+
+

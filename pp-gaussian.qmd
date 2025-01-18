@@ -1,0 +1,29 @@
+# Gaussian Distributions and Processes {.unnumbered}
+
+
+
+(@) Devi and Paxton are meeting.
+Arrival times are measured in minutes after noon, with negative times representing arrivals before noon.
+Devi’s arrival time follows a Normal distribution with mean 20 and SD 15 minutes, and Paxton’s arrival time follows a Normal distribution with mean 25 and SD 10 minutes.
+
+    a. Assume the pairs of arrival times follow a Bivariate Normal distribution with correlation 0.8
+        1. Compute the probability that Devi arrives first given that Paxton arrives at 12:10.
+        1. Compute the probability that the first person to arrive has to wait more than 15 minutes for the second person to arrive.
+    a. Assume the pairs of arrival times follow a Bivariate Normal distribution with correlation -0.7
+        1. Compute the probability that Devi arrives first given that Paxton arrives at 12:10.
+        1. Compute the probability that the first person to arrive has to wait more than 15 minutes for the second person to arrive.
+
+
+
+
+
+
+(@) The noise in a voltage signal is modeled by a Gaussian process with constant mean 0.9V.
+If we sample the noise at two nearby times, they will be correlated.
+Specifically, suppose the covariance of the noise at any two times that are $t$ seconds apart is given by $0.04 e^{–0.1|t|}$.
+
+
+    a. Find $\text{Cov}(X(3), X(8))$.
+    a. Find $\text{Var}(X(3))$ and $\text{Var}(X(8))$. (Hint: how can you write a variance as a covariance?)
+    a. Find $\text{Corr}(X(3), X(8))$.
+    a. Find $\text{P}(X(3) > X(8) + 0.5)$.

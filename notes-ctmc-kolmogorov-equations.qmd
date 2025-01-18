@@ -1,0 +1,137 @@
+# Continuous Time Markov Chains: Transition Probabilities and Kolmogorov Equations {.unnumbered}
+
+{{< include _python_setup.qmd >}}
+
+
+
+
+
+
+
+
+## Busy machine
+
+
+
+```{r}
+Q = rbind(
+  c(-2, 2),
+  c(10, -10)
+)
+```
+
+
+```{r}
+t = 1 / 60
+  
+10 / 12 + 2 / 12 * exp(-12 * t)
+
+10 / 12 - 10 / 12 * exp(-12 * t)
+```
+
+
+```{r}
+library(expm)
+
+expm(Q * 1 / 60)
+```
+
+
+```{r}
+t = 1 / 6
+  
+10 / 12 + 2 / 12 * exp(-12 * t)
+
+10 / 12 - 10 / 12 * exp(-12 * t)
+```
+
+```{r}
+
+expm(Q * 1 / 6)
+```
+
+```{r}
+t = 1
+  
+10 / 12 + 2 / 12 * exp(-12 * t)
+
+10 / 12 - 10 / 12 * exp(-12 * t)
+```
+
+```{r}
+expm(Q * 1)
+```
+
+```{r}
+t = 2
+
+10 / 12 + 2 / 12 * exp(-12 * t)
+
+10 / 12 - 10 / 12 * exp(-12 * t)
+```
+
+```{r}
+expm(Q * 2)
+```
+
+
+
+## Machine repair
+
+
+```{python}
+Q = [[-0.2, 0.05, 0.15],
+     [   0,   -1,    1],
+     [ 1.5, 0.5,    -2]]
+
+pi0 = [1, 0, 0]
+
+states = [1, 2, 3]
+
+X = ContinuousTimeMarkovChain(Q, pi0, states)
+```
+
+```{python}
+plt.figure();
+X[1 / 60].sim(10000).plot()
+plt.show();
+```
+
+
+```{r}
+Q = rbind(
+  c(-0.2, 0.05, 0.15),
+  c(0, -1, 1),
+  c(1.5, 0.5, - 2)
+)
+
+expm(Q * 1 / 60)
+```
+
+
+```{r}
+expm(Q * 1.5 / 60)
+```
+
+
+```{r}
+expm(Q * 1)
+```
+
+```{python}
+plt.figure();
+X[10].sim(10000).plot()
+plt.show();
+```
+
+```{r}
+expm(Q * 10)
+```
+
+
+
+
+
+
+
+

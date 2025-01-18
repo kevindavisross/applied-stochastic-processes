@@ -1,0 +1,201 @@
+# Exponential Distributions {.unnumbered}
+
+{{< include _python_setup.qmd >}}
+
+## Exponential distributions
+
+```{python}
+#| eval: false
+
+from matplotlib import pyplot as plt
+
+from symbulate import *
+```
+
+
+```{python}
+W = RV(Exponential(rate = 1 / 30))
+
+w = W.sim(10000)
+
+w
+```
+
+
+```{python}
+plt.figure();
+
+w.plot()
+
+Exponential(rate = 1 / 30).plot()
+
+plt.show();
+
+```
+
+
+```{python}
+w.count_gt(45) / 10000, 1 - Exponential(rate = 1 / 30).cdf(45)
+```
+
+## Scaling
+
+
+```{python}
+U = RV(Exponential(rate = 1))
+
+W = U / (1 / 30)
+
+plt.figure(); 
+
+W.sim(10000).plot()
+
+Exponential(rate = 1 / 30).plot()
+
+plt.show();
+```
+
+
+```{python}
+U = RV(Exponential(rate = 1))
+
+V = U / 2
+
+plt.figure(); 
+
+V.sim(10000).plot()
+
+Exponential(rate = 2).plot()
+
+plt.show();
+```
+
+
+
+
+## Memoryless property
+
+
+```{python}
+plt.figure();
+
+W.sim(10000).plot()
+
+(W - 120 | (W > 120) ).sim(10000).plot()
+
+plt.show();
+
+```
+
+
+
+
+## Exponential race
+
+```{python}
+X, Y = RV(Exponential(rate = 1 / 10) * Exponential(rate = 1 / 20))
+
+W = (X & Y).apply(min)
+
+```
+
+```{python}
+xyw = (X & Y & W).sim(10000)
+xyw
+```
+
+
+```{python}
+xyw.mean()
+```
+
+
+
+```{python}
+plt.figure();
+
+W.sim(10000).plot()
+
+Exponential(rate = 1 / 10 + 1 / 20).plot()
+
+plt.show();
+```
+
+
+```{python}
+(Y > X).sim(10000).tabulate(normalize = True)
+```
+
+
+```{python}
+plt.figure();
+
+(W | (Y > X) ).sim(10000).plot()
+
+(W | (Y < X) ).sim(10000).plot()
+
+Exponential(rate = 1 / 10 + 1 / 20).plot()
+
+plt.show();
+```
+
+
+
+
+## Gamma distributions
+
+
+```{python}
+W1, W2, W3 = RV(Exponential(rate = 2) ** 3)
+
+T = W1 + W2 + W3
+```
+
+
+```{python}
+sim = (W1 & W2 & W3 & T).sim(10000)
+
+sim
+```
+
+
+```{python}
+sim.mean()
+```
+
+
+```{python}
+sim.var()
+```
+
+
+```{python}
+sim.sd()
+```
+
+
+
+
+
+```{python}
+plt.figure();
+
+T.sim(10000).plot()
+
+Gamma(shape = 3, rate = 2).plot()
+
+plt.show();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

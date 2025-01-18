@@ -1,0 +1,147 @@
+# Stationary Distributions and Long Run Behavior of CTMCs {.unnumbered}
+
+{{< include _r_mc_setup.qmd >}}
+
+{{< include _python_setup.qmd >}}
+
+
+
+
+
+
+
+
+## Seagull
+
+
+
+```{r}
+Q = rbind(
+  c(-1, 0.4, 0.6),
+  c(0.8 / 3,  -1 / 3, 0.2 / 3),
+  c(0.9 / 5, 0.1 / 5,  -1 / 5)
+)
+
+
+```
+
+
+```{r}
+compute_stationary_distribution_ctmc <- function(Q){
+  s = nrow(Q)
+  Pi = rep(1,s) %*% solve(diag(s) - Q + matrix(rep(1, s * s) - diag(s), ncol = s))
+  return(Pi)
+}
+```
+
+
+```{r}
+pi_ctmc = compute_stationary_distribution_ctmc(Q)
+
+pi_ctmc
+```
+
+
+
+```{r}
+P = rbind(
+  c(0, 0.4, 0.6),
+  c(0.8, 0, 0.2),
+  c(0.9, 0.1, 0)
+)
+```
+
+```{r}
+pi_dtmc = compute_stationary_distribution(P)
+
+pi_dtmc
+```
+
+```{r}
+pi_ctmc = pi_dtmc * 1 / -diag(Q)
+
+pi_ctmc = pi_ctmc / sum(pi_ctmc)
+```
+
+## Starting from stationary distribution
+
+```{r}
+library(expm)
+```
+
+
+```{r}
+
+pi_ctmc %*% expm(Q * 0.01)
+```
+
+
+
+```{python}
+Q = [[-1, 0.4, 0.6],
+     [0.8 / 3,  -1 / 3, 0.2 / 3],
+     [0.9 / 5, 0.1 / 5,  -1 / 5]]
+
+pi0 = [0.1701389, 0.2395833, 0.5902778]
+
+states = [1, 2, 3]
+
+X = ContinuousTimeMarkovChain(Q, pi0, states)
+
+plt.figure();
+X[0.1].sim(10000).plot()
+plt.show();
+```
+
+```{r}
+
+pi_ctmc %*% expm(Q * 0.1)
+```
+
+
+```{r}
+pi_ctmc %*% expm(Q * 1)
+```
+
+
+
+```{r}
+pi_ctmc %*% expm(Q * 10)
+```
+
+
+
+## Starting from each of the 3 states
+
+```{r}
+expm(Q * 0.01)
+```
+
+```{r}
+expm(Q * 0.1)
+```
+
+```{r}
+expm(Q * 1)
+```
+
+
+```{r}
+expm(Q * 2)
+```
+
+
+```{r}
+expm(Q * 5)
+```
+
+
+
+```{r}
+expm(Q * 10)
+```
+
+```{r}
+expm(Q * 20)
+```
+
